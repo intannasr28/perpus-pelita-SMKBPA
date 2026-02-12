@@ -254,21 +254,23 @@ font-weight: 700;
 	padding:0;
 }
 .sidebar-collapse .nav > li > a {
-	color:#fff;
-	background:#001a33;
+	color:#28719E;
+	background:#ffffff;
 	text-shadow:none;
+	font-weight: 600;
 	
 }
 .sidebar-collapse > .nav > li > a {
 	padding:15px 10px;
 }
 .sidebar-collapse > .nav > li {
-	border-bottom: 1px solid rgba(107, 108, 109, 0.19);
+	border-bottom: 1px solid rgba(13, 71, 161, 0.1);
 }
 .sidebar-collapse .nav > li > a:hover,
 .sidebar-collapse .nav > li > a:focus {
 	
 	background:#0d47a1;
+	color: #fff !important;
 	outline:0;
 }
 
@@ -386,14 +388,17 @@ line-height: 1.428571429;
 
 /* Enhanced Sidebar Styling */
 .main-sidebar {
-    background-color: #001a33 !important;
+    background-color: #ffffff !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar {
-    background-color: #001a33 !important;
+    background-color: #ffffff !important;
 }
 
 .sidebar-menu > li > a {
+    color: #28719E;
+    font-weight: 600;
     transition: all 0.3s ease;
     border-left: 4px solid transparent;
 }
@@ -402,20 +407,24 @@ line-height: 1.428571429;
     background-color: #0d47a1 !important;
     border-left-color: #42a5f5;
     padding-left: 16px;
+    color: #fff !important;
 }
 
 .sidebar-menu > li.active > a {
     background-color: #0d47a1 !important;
     border-left-color: #42a5f5;
+    color: #fff !important;
 }
 
 /* Treeview Menu Styling */
 .treeview-menu {
-    background-color: rgba(0, 26, 51, 0.8) !important;
+    background-color: rgba(13, 71, 161, 0.08) !important;
+    border-left: 3px solid #28719E;
 }
 
 .treeview-menu > li > a {
-    color: #b0c4de !important;
+    color: #28719E !important;
+    font-weight: 600 !important;
     transition: all 0.2s ease;
 }
 
@@ -424,25 +433,54 @@ line-height: 1.428571429;
     padding-left: 40px !important;
 }
 
+/* Sidebar Header Styling */
+.sidebar-menu > li.header {
+    color: #0d47a1 !important;
+    background-color: rgba(13, 71, 161, 0.08);
+    font-weight: 700 !important;
+    padding: 10px 15px !important;
+    border-left: 4px solid #0d47a1;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
 /* Header Styling */
 .main-header {
-    background-color: #001a33 !important;
+    background-color: #ffffff !important;
     border-bottom: 3px solid #0d47a1;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .main-header .navbar-static-top {
-    background-color: #001a33 !important;
+    background-color: #ffffff !important;
 }
 
 .main-header .logo {
-    background-color: #001a33 !important;
+    background-color: #ffffff !important;
     border-right: 3px solid #0d47a1;
     transition: all 0.3s ease;
 }
 
 .main-header .logo:hover {
-    background-color: #0d47a1 !important;
+    background-color: #f5f5f5 !important;
+}
+
+/* Header Text Color - White Background */
+.main-header .logo b {
+    color: #28719E !important;
+    font-weight: 700 !important;
+}
+
+.main-header .navbar-brand {
+    color: #28719E !important;
+    font-weight: 600 !important;
+}
+
+.main-header .navbar-nav > li > a > span,
+.main-header .navbar-custom-menu .nav > li > a > span {
+    color: #0d47a1 !important;
+    font-weight: 600 !important;
 }
 
 /* Content Wrapper Styling */
@@ -511,32 +549,201 @@ line-height: 1.428571429;
     border-top-color: #c62828 !important;
 }
 
-/* Button Styling */
+/* ==========================================
+   MODERN VIBRANT BUTTON STYLES
+   ========================================== */
 .btn {
     border: none;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.35s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Primary Button - Vibrant Blue */
 .btn-primary {
-    background-color: #0d47a1;
-    border: none;
+    background: linear-gradient(135deg, #1E90FF 0%, #3498DB 50%, #0066FF 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
-    background-color: #1565c0;
-    box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #0066FF 0%, #1E90FF 50%, #3498DB 100%) !important;
+    box-shadow: 
+        0 8px 20px rgba(30, 144, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-3px);
+    color: white !important;
 }
 
+.btn-primary:active {
+    transform: translateY(-1px);
+    box-shadow: 
+        0 4px 12px rgba(30, 144, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Success Button - Vibrant Green */
 .btn-success {
-    background-color: #43a047;
+    background: linear-gradient(135deg, #00D084 0%, #2ECC71 50%, #00BA5E 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-success:hover {
-    background-color: #388e3c;
-    box-shadow: 0 4px 12px rgba(67, 160, 71, 0.3);
+    background: linear-gradient(135deg, #00BA5E 0%, #00D084 50%, #2ECC71 100%) !important;
+    box-shadow: 
+        0 8px 20px rgba(0, 208, 132, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-3px);
+    color: white !important;
+}
+
+.btn-success:active {
+    transform: translateY(-1px);
+    box-shadow: 
+        0 4px 12px rgba(0, 208, 132, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Danger Button - Vibrant Red */
+.btn-danger {
+    background: linear-gradient(135deg, #FF2D55 0%, #FF6B6B 50%, #FF5252 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #FF5252 0%, #FF2D55 50%, #FF6B6B 100%) !important;
+    box-shadow: 
+        0 8px 20px rgba(255, 45, 85, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-3px);
+    color: white !important;
+}
+
+.btn-danger:active {
+    transform: translateY(-1px);
+    box-shadow: 
+        0 4px 12px rgba(255, 45, 85, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Warning Button - Vibrant Orange */
+.btn-warning {
+    background: linear-gradient(135deg, #FF9800 0%, #FFB74D 50%, #FF7043 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #FF7043 0%, #FF9800 50%, #FFB74D 100%) !important;
+    box-shadow: 
+        0 8px 20px rgba(255, 152, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-3px);
+    color: white !important;
+}
+
+.btn-warning:active {
+    transform: translateY(-1px);
+    box-shadow: 
+        0 4px 12px rgba(255, 152, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Info Button - Vibrant Cyan */
+.btn-info {
+    background: linear-gradient(135deg, #00D9FF 0%, #00BCD4 50%, #0097A7 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #0097A7 0%, #00D9FF 50%, #00BCD4 100%) !important;
+    box-shadow: 
+        0 8px 20px rgba(0, 217, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-3px);
+    color: white !important;
+}
+
+.btn-info:active {
+    transform: translateY(-1px);
+    box-shadow: 
+        0 4px 12px rgba(0, 217, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Secondary/Default Button - Modern Gray */
+.btn-default,
+.btn-secondary {
+    background: linear-gradient(135deg, #9E9E9E 0%, #757575 50%, #616161 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-default:hover,
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #757575 0%, #9E9E9E 50%, #616161 100%) !important;
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-3px);
+    color: white !important;
+}
+
+.btn-default:active,
+.btn-secondary:active {
+    transform: translateY(-1px);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Small Button Adjustments */
+.btn-sm {
+    padding: 6px 14px !important;
+    font-size: 12px !important;
+    border-radius: 6px !important;
+}
+
+/* Medium Button Adjustments */
+.btn-md {
+    padding: 10px 18px !important;
+    font-size: 14px !important;
+}
+
+/* Large Button Adjustments */
+.btn-lg {
+    padding: 12px 24px !important;
+    font-size: 16px !important;
+    border-radius: 10px !important;
+}
+
+/* Block Button */
+.btn-block {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
 }
 
 /* Form Styling */
@@ -593,12 +800,24 @@ line-height: 1.428571429;
 
 /* User Panel Styling */
 .user-panel {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(13, 71, 161, 0.2);
+    padding: 20px 15px 15px 15px;
+    margin-top: 15px;
+    background-color: rgba(13, 71, 161, 0.05);
+    border-radius: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .user-panel p {
-    color: #fff;
-    font-weight: 600;
+    color: #28719E;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    font-size: 14px;
+}
+
+.user-panel .image {
+    margin-bottom: 10px;
 }
 
 /* Dropdown Menu Styling */
@@ -915,6 +1134,270 @@ html {
     border-color: #0d47a1;
 }
 
+/* ==========================================
+   ENHANCED DASHBOARD CARD STYLES - MODERN GLOSSY PREMIUM
+   ========================================== */
+
+/* Premium small-box styling with advanced glossy effects */
+.small-box {
+    border-radius: 14px !important;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    background-attachment: fixed;
+}
+
+/* Multi-layer shadow system for depth */
+.small-box {
+    box-shadow: 
+        0 0 40px rgba(0, 0, 0, 0.15),
+        0 10px 30px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Top shine/gloss effect */
+.small-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.15) 30%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+    border-radius: 14px 14px 0 0;
+}
+
+/* Radial glow effect on hover */
+.small-box::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+    opacity: 0;
+    transition: all 0.4s ease;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.small-box:hover {
+    transform: translateY(-12px) scale(1.03) !important;
+    box-shadow: 
+        0 0 60px rgba(0, 0, 0, 0.25),
+        0 20px 50px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+        0 0 30px rgba(255, 255, 255, 0.2) !important;
+}
+
+.small-box:hover::after {
+    opacity: 1;
+}
+
+/* Icon enhancement on hover */
+.small-box:hover .icon {
+    font-size: 115px !important;
+    transform: rotate(25deg) scale(1.2);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4)) brightness(1.2);
+    animation: iconPulse 0.6s ease-out;
+}
+
+@keyframes iconPulse {
+    0% {
+        transform: rotate(0deg) scale(0.9);
+        filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+    }
+    50% {
+        transform: rotate(12deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(25deg) scale(1.2);
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+    }
+}
+
+/* Ultra-Premium Vibrant Gradient Color Palette */
+.small-box.bg-red {
+    background: linear-gradient(135deg, #FF1744 0%, #FF5252 40%, #FF2D55 100%) !important;
+    position: relative;
+}
+
+.small-box.bg-red::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(255, 100, 100, 0.1) 100%);
+}
+
+.small-box.bg-yellow {
+    background: linear-gradient(135deg, #FFD600 0%, #FFE54C 40%, #FFC107 100%) !important;
+}
+
+.small-box.bg-yellow::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(255, 220, 100, 0.1) 100%);
+}
+
+.small-box.bg-blue {
+    background: linear-gradient(135deg, #0078FF 0%, #3498DB 40%, #2196F3 100%) !important;
+}
+
+.small-box.bg-blue::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(100, 150, 255, 0.1) 100%);
+}
+
+.small-box.bg-green {
+    background: linear-gradient(135deg, #00D084 0%, #2ECC71 40%, #27AE60 100%) !important;
+}
+
+.small-box.bg-green::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(100, 255, 150, 0.1) 100%);
+}
+
+.small-box.bg-aqua {
+    background: linear-gradient(135deg, #00E5FF 0%, #00BCD4 40%, #0097A7 100%) !important;
+}
+
+.small-box.bg-aqua::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(100, 220, 255, 0.1) 100%);
+}
+
+.small-box.bg-light-blue {
+    background: linear-gradient(135deg, #4A90E2 0%, #5B9BD5 40%, #3498DB 100%) !important;
+}
+
+.small-box.bg-light-blue::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(120, 160, 255, 0.1) 100%);
+}
+
+.small-box.bg-navy {
+    background: linear-gradient(135deg, #1a237e 0%, #283593 40%, #3f51b5 100%) !important;
+}
+
+.small-box.bg-navy::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0%, rgba(100, 120, 220, 0.05) 100%);
+}
+
+.small-box.bg-teal {
+    background: linear-gradient(135deg, #00BFA5 0%, #1ABC9C 40%, #16A085 100%) !important;
+}
+
+.small-box.bg-teal::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(100, 220, 200, 0.1) 100%);
+}
+
+.small-box.bg-olive {
+    background: linear-gradient(135deg, #7CB342 0%, #9CCC65 40%, #558B2F 100%) !important;
+}
+
+.small-box.bg-olive::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0%, rgba(180, 220, 100, 0.1) 100%);
+}
+
+.small-box.bg-lime {
+    background: linear-gradient(135deg, #00E676 0%, #32CD32 40%, #00C853 100%) !important;
+}
+
+.small-box.bg-lime::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(150, 255, 120, 0.1) 100%);
+}
+
+.small-box.bg-orange {
+    background: linear-gradient(135deg, #FF6F00 0%, #FF9800 40%, #FF7043 100%) !important;
+}
+
+.small-box.bg-orange::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(255, 150, 100, 0.1) 100%);
+}
+
+.small-box.bg-purple {
+    background: linear-gradient(135deg, #D500F9 0%, #9C27B0 40%, #7B1FA2 100%) !important;
+}
+
+.small-box.bg-purple::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0%, rgba(200, 150, 255, 0.1) 100%);
+}
+
+.small-box.bg-pink {
+    background: linear-gradient(135deg, #FF1493 0%, #E91E63 40%, #C2185B 100%) !important;
+}
+
+.small-box.bg-pink::before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(255, 100, 180, 0.1) 100%);
+}
+
+/* Enhanced text styling for small-box */
+.small-box > .inner {
+    padding: 20px 15px !important;
+    color: #fff !important;
+    position: relative;
+    z-index: 3;
+}
+
+.small-box > .inner h4,
+.small-box > .inner h3 {
+    font-weight: 800 !important;
+    color: #fff !important;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+    font-size: 36px !important;
+    letter-spacing: -0.5px;
+    margin: 0 0 8px 0;
+}
+
+.small-box > .inner p {
+    color: rgba(255, 255, 255, 0.99) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    font-size: 14px !important;
+    margin: 0;
+}
+
+/* Enhanced footer with glossy effect */
+.small-box > .small-box-footer {
+    background: rgba(0, 0, 0, 0.25) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    font-weight: 700;
+    position: relative;
+    z-index: 3;
+    padding: 10px 0 !important;
+    backdrop-filter: blur(5px);
+}
+
+.small-box > .small-box-footer:hover {
+    background: rgba(0, 0, 0, 0.4) !important;
+    color: #fff !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.small-box > .small-box-footer i {
+    margin-left: 8px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: inline-block;
+}
+
+.small-box > .small-box-footer:hover i {
+    transform: translateX(5px) scale(1.1);
+}
+
+/* Icon styling with glow */
+.small-box .icon {
+    color: rgba(255, 255, 255, 0.35) !important;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    position: relative;
+    z-index: 0;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .sidebar-menu > li > a {
@@ -930,5 +1413,448 @@ html {
         right: 15px;
         padding: 10px 13px;
     }
+    
+    .small-box {
+        margin-bottom: 15px;
+    }
+}
+
+/* ==========================================
+   MODERN VIBRANT ACTION BUTTON STYLES
+   ========================================== */
+
+/* Edit Button - Modern Blue */
+.btn-edit,
+.btn-sm[style*="background-color: #0d47a1"],
+a.btn.btn-primary {
+    background: linear-gradient(135deg, #0078FF 0%, #1E90FF 50%, #3498DB 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 
+        0 4px 15px rgba(30, 144, 255, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-edit::before,
+.btn-sm[style*="background-color: #0d47a1"]::before,
+a.btn.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.btn-edit:hover::before,
+.btn-sm[style*="background-color: #0d47a1"]:hover::before,
+a.btn.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-edit:hover,
+.btn-sm[style*="background-color: #0d47a1"]:hover,
+a.btn.btn-primary:hover {
+    background: linear-gradient(135deg, #0066FF 0%, #0078FF 50%, #1E90FF 100%) !important;
+    box-shadow: 
+        0 10px 30px rgba(30, 144, 255, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 20px rgba(30, 144, 255, 0.3) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    color: white !important;
+}
+
+.btn-edit:active,
+.btn-sm[style*="background-color: #0d47a1"]:active,
+a.btn.btn-primary:active {
+    transform: translateY(-1px) !important;
+    box-shadow: 
+        0 4px 15px rgba(30, 144, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Delete Button - Modern Red */
+.btn-delete,
+.btn-sm[style*="background-color: #d9534f"],
+a.btn.btn-danger {
+    background: linear-gradient(135deg, #FF1744 0%, #FF2D55 50%, #FF6B6B 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 
+        0 4px 15px rgba(255, 45, 85, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-delete::before,
+.btn-sm[style*="background-color: #d9534f"]::before,
+a.btn.btn-danger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.btn-delete:hover::before,
+.btn-sm[style*="background-color: #d9534f"]:hover::before,
+a.btn.btn-danger:hover::before {
+    left: 100%;
+}
+
+.btn-delete:hover,
+.btn-sm[style*="background-color: #d9534f"]:hover,
+a.btn.btn-danger:hover {
+    background: linear-gradient(135deg, #FF5252 0%, #FF1744 50%, #FF2D55 100%) !important;
+    box-shadow: 
+        0 10px 30px rgba(255, 45, 85, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 20px rgba(255, 45, 85, 0.3) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    color: white !important;
+}
+
+.btn-delete:active,
+.btn-sm[style*="background-color: #d9534f"]:active,
+a.btn.btn-danger:active {
+    transform: translateY(-1px) !important;
+    box-shadow: 
+        0 4px 15px rgba(255, 45, 85, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Add/Create Button - Modern Green */
+.btn-add,
+.btn-create,
+a.btn.btn-success {
+    background: linear-gradient(135deg, #00D084 0%, #2ECC71 50%, #27AE60 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 
+        0 4px 15px rgba(0, 208, 132, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-add::before,
+.btn-create::before,
+a.btn.btn-success::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.btn-add:hover::before,
+.btn-create:hover::before,
+a.btn.btn-success:hover::before {
+    left: 100%;
+}
+
+.btn-add:hover,
+.btn-create:hover,
+a.btn.btn-success:hover {
+    background: linear-gradient(135deg, #27AE60 0%, #00D084 50%, #2ECC71 100%) !important;
+    box-shadow: 
+        0 10px 30px rgba(0, 208, 132, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 20px rgba(0, 208, 132, 0.3) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    color: white !important;
+}
+
+.btn-add:active,
+.btn-create:active,
+a.btn.btn-success:active {
+    transform: translateY(-1px) !important;
+    box-shadow: 
+        0 4px 15px rgba(0, 208, 132, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Print Button - Modern Orange */
+.btn-print,
+.btn-sm[style*="background-color: #f39c12"],
+a.btn.btn-warning {
+    background: linear-gradient(135deg, #FF9800 0%, #FFB74D 50%, #FFC107 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 
+        0 4px 15px rgba(255, 152, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-print::before,
+.btn-sm[style*="background-color: #f39c12"]::before,
+a.btn.btn-warning::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.btn-print:hover::before,
+.btn-sm[style*="background-color: #f39c12"]:hover::before,
+a.btn.btn-warning:hover::before {
+    left: 100%;
+}
+
+.btn-print:hover,
+.btn-sm[style*="background-color: #f39c12"]:hover,
+a.btn.btn-warning:hover {
+    background: linear-gradient(135deg, #FFC107 0%, #FF9800 50%, #FFB74D 100%) !important;
+    box-shadow: 
+        0 10px 30px rgba(255, 152, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 20px rgba(255, 152, 0, 0.3) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    color: white !important;
+}
+
+.btn-print:active,
+.btn-sm[style*="background-color: #f39c12"]:active,
+a.btn.btn-warning:active {
+    transform: translateY(-1px) !important;
+    box-shadow: 
+        0 4px 15px rgba(255, 152, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Reset Button - Modern Gray */
+.btn-reset,
+.btn-secondary {
+    background: linear-gradient(135deg, #9E9E9E 0%, #757575 50%, #616161 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.btn-reset:hover,
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #757575 0%, #9E9E9E 50%, #616161 100%) !important;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    color: white !important;
+}
+
+.btn-reset:active,
+.btn-secondary:active {
+    transform: translateY(-1px) !important;
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Button Group Styling */
+.btn-group > .btn,
+.btn-group-vertical > .btn {
+    border-radius: 8px;
+    margin-right: 8px;
+}
+
+.btn-group > .btn:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.btn-group > .btn:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    margin-right: 0;
+}
+
+/* Button Disabled State */
+.btn:disabled,
+.btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* Icon Button */
+.btn i {
+    margin-right: 6px;
+    transition: all 0.35s ease;
+}
+
+.btn:hover i {
+    transform: scale(1.1);
+}
+
+/* Inline Button */
+a.btn {
+    text-decoration: none;
+    display: inline-block;
+}
+
+a.btn:hover {
+    text-decoration: none;
+}
+
+/* ==========================================
+   ADMINLTE BUTTON OVERRIDES
+   ========================================== */
+
+/* AdminLTE Primary Button */
+.btn-primary {
+    background: linear-gradient(135deg, #1E90FF 0%, #3498DB 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(30, 144, 255, 0.2) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background: linear-gradient(135deg, #0066FF 0%, #1E90FF 100%) !important;
+    box-shadow: 0 8px 20px rgba(30, 144, 255, 0.4) !important;
+    transform: translateY(-3px) !important;
+    color: white !important;
+}
+
+/* AdminLTE Danger Button */
+.btn-danger {
+    background: linear-gradient(135deg, #FF2D55 0%, #FF6B6B 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(255, 45, 85, 0.2) !important;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+    background: linear-gradient(135deg, #FF5252 0%, #FF2D55 100%) !important;
+    box-shadow: 0 8px 20px rgba(255, 45, 85, 0.4) !important;
+    transform: translateY(-3px) !important;
+    color: white !important;
+}
+
+/* AdminLTE Success Button */
+.btn-success {
+    background: linear-gradient(135deg, #00D084 0%, #2ECC71 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(0, 208, 132, 0.2) !important;
+}
+
+.btn-success:hover,
+.btn-success:focus {
+    background: linear-gradient(135deg, #00BA5E 0%, #00D084 100%) !important;
+    box-shadow: 0 8px 20px rgba(0, 208, 132, 0.4) !important;
+    transform: translateY(-3px) !important;
+    color: white !important;
+}
+
+/* AdminLTE Warning Button */
+.btn-warning {
+    background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2) !important;
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+    background: linear-gradient(135deg, #FF7043 0%, #FF9800 100%) !important;
+    box-shadow: 0 8px 20px rgba(255, 152, 0, 0.4) !important;
+    transform: translateY(-3px) !important;
+    color: white !important;
+}
+
+/* AdminLTE Info Button */
+.btn-info {
+    background: linear-gradient(135deg, #00D9FF 0%, #00BCD4 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(0, 217, 255, 0.2) !important;
+}
+
+.btn-info:hover,
+.btn-info:focus {
+    background: linear-gradient(135deg, #0097A7 0%, #00D9FF 100%) !important;
+    box-shadow: 0 8px 20px rgba(0, 217, 255, 0.4) !important;
+    transform: translateY(-3px) !important;
+    color: white !important;
+}
+
+/* AdminLTE Default Button */
+.btn-default {
+    background: linear-gradient(135deg, #9E9E9E 0%, #757575 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-default:hover,
+.btn-default:focus {
+    background: linear-gradient(135deg, #757575 0%, #9E9E9E 100%) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-3px) !important;
+    color: white !important;
+}
+
+/* Button in DataTable and Table Actions */
+.table .btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    margin: 0 2px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table .btn:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Buttons */
+.modal-footer .btn {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* Search & Filter Buttons */
+.form-inline .btn {
+    margin-left: 5px;
 }
 

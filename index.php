@@ -49,6 +49,8 @@ if (!file_exists($school_logo_path)) {
 	<!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
 	<link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+	<!-- Custom Styles -->
+	<link rel="stylesheet" href="assets/css/custom.css">
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>

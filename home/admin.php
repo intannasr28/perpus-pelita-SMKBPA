@@ -96,7 +96,7 @@
 						<?= $pin; ?>
 					</h4>
 
-					<p>Sirkulasi yang sedang berjalan</p>
+					<p>Tagihan Berjalan</p>
 				</div>
 				<div class="icon">
 					<i class="ion ion-stats-bars"></i>
