@@ -1,5 +1,5 @@
 <section class="content-header">
-	<h1 style="text-align:center;">
+	<h1>
 		Riwayat Peminjaman Buku
 	</h1>
 	<ol class="breadcrumb">

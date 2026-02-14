@@ -74,7 +74,7 @@
 			<div class="small-box bg-yellow">
 				<div class="inner">
 					<h4>
-						<?= $buku; ?>
+						<?= $agt; ?>
 					</h4>
 
 					<p>Anggota</p>

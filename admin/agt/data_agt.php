@@ -1,4 +1,4 @@
-<section class="content-header" style="text-align: center;">
+<section class="content-header">
 	<h1>
 		Data Anggota
 	</h1>

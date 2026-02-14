@@ -92,13 +92,19 @@ if (isset($_POST['btnLogin'])) {
 			text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
 		}
 
-		.login-box-body {
-			background: rgba(255, 255, 255, 0.95);
-			border-radius: 12px;
-			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-			padding: 30px;
-			backdrop-filter: blur(10px);
-		}
+		   .login-box-body {
+			   background: #fff;
+			   border-radius: 16px;
+			   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+			   padding: 32px 30px 30px 30px;
+			   border: 1.5px solid #f0f0f0;
+			   backdrop-filter: blur(10px);
+			   position: relative;
+			   overflow: hidden;
+		   }
+		   .login-box-body::before {
+			   display: none;
+		   }
 
 		.login-box-body .login-box-msg {
 			font-size: 18px;
@@ -121,33 +127,50 @@ if (isset($_POST['btnLogin'])) {
 			background-color: #f8f9ff;
 		}
 
-		.form-group.has-feedback .form-control-feedback {
-			color: #0051b3;
-			font-size: 16px;
-			right: 12px;
-		}
+		   .form-group.has-feedback .form-control-feedback {
+			   color: #0051b3;
+			   font-size: 16px;
+			   right: 12px;
+			   cursor: pointer;
+			   z-index: 2;
+		   }
 
-		.btn-primary {
-			background-color: #0051b3;
-			border-color: #0051b3;
-			font-weight: 600;
-			height: 42px;
-			font-size: 15px;
-			border-radius: 6px;
-			transition: all 0.3s ease;
-		}
-
-		.btn-primary:hover,
-		.btn-primary:focus {
-			background-color: #003d82;
-			border-color: #003d82;
-			box-shadow: 0 4px 12px rgba(0, 81, 179, 0.3);
-			transform: translateY(-2px);
-		}
-
-		.btn-primary:active {
-			transform: translateY(0);
-		}
+		   .btn-primary {
+			   background: linear-gradient(90deg, #0051b3 0%, #003d82 100%);
+			   border: none;
+			   color: #fff;
+			   font-weight: 700;
+			   height: 44px;
+			   font-size: 16px;
+			   border-radius: 8px;
+			   box-shadow: 0 2px 12px rgba(0, 81, 179, 0.18), 0 1.5px 0 #fff inset;
+			   transition: all 0.3s cubic-bezier(.4,2,.3,1);
+			   position: relative;
+			   overflow: hidden;
+		   }
+		   .btn-primary::after {
+			   content: '';
+			   position: absolute;
+			   left: 0; top: 0; width: 100%; height: 100%;
+			   background: linear-gradient(120deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 100%);
+			   opacity: 0.7;
+			   pointer-events: none;
+			   border-radius: 8px;
+			   transition: opacity 0.3s;
+		   }
+		   .btn-primary:hover,
+		   .btn-primary:focus {
+			   background: linear-gradient(90deg, #003d82 0%, #0051b3 100%);
+			   box-shadow: 0 6px 20px rgba(0, 81, 179, 0.22), 0 2px 0 #fff inset;
+			   transform: translateY(-2px) scale(1.03);
+		   }
+		   .btn-primary:active {
+			   transform: translateY(0) scale(0.98);
+		   }
+		   .btn-primary b {
+			   letter-spacing: 0.5px;
+			   text-shadow: 0 1px 4px rgba(0,0,0,0.08);
+		   }
 	</style>
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -178,14 +201,13 @@ if (isset($_POST['btnLogin'])) {
 					Username atau Password salah!
 				</div>
 			<?php } ?>			<form action="#" method="post">
-				<div class="form-group has-feedback">
-					<input type="text" class="form-control" name="username" placeholder="Username" required>
-					<span class="glyphicon glyphicon-user form-control-feedback"></span>
-				</div>
-				<div class="form-group has-feedback">
-					<input type="password" class="form-control" name="password" placeholder="Password" required>
-					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
-				</div>
+				   <div class="form-group has-feedback">
+					   <input type="text" class="form-control" name="username" placeholder="Username" required>
+				   </div>
+				   <div class="form-group has-feedback" style="position:relative;">
+					   <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+					   <span class="fa fa-eye form-control-feedback" id="showHidePassword" style="pointer-events:auto; right:12px;"></span>
+				   </div>
 				<div class="row">
 					<div class="col-xs-8">
 
@@ -206,13 +228,25 @@ if (isset($_POST['btnLogin'])) {
 	</div>
 	<!-- /.login-box -->
 
-	<!-- jQuery 2.2.3 -->
-	<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-	<!-- Bootstrap 3.3.6 -->
-	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<!-- iCheck -->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-	<!-- sweet alert -->
+	   <!-- jQuery 2.2.3 -->
+	   <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+	   <!-- Bootstrap 3.3.6 -->
+	   <script src="bootstrap/js/bootstrap.min.js"></script>
+	   <!-- iCheck -->
+	   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	   <!-- sweet alert -->
+	   <script>
+	   // Show/hide password toggle
+	   $(function() {
+		   $('#showHidePassword').addClass('fa-eye');
+		   $('#showHidePassword').on('click', function() {
+			   var input = $('#password');
+			   var type = input.attr('type') === 'password' ? 'text' : 'password';
+			   input.attr('type', type);
+			   $(this).toggleClass('fa-eye fa-eye-slash');
+		   });
+	   });
+	   </script>
 </body>
 
 </html>
