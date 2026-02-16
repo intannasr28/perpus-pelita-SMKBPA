@@ -21,15 +21,15 @@ if (strlen($tambah) == 1){
 		<li>
 			<a href="index.php">
 				<i class="fa fa-home"></i>
-				<b>Perpus Pelita</b>
+				<b>Kembali</b>
 			</a>
 		</li>
 	</ol>
 </section>
 
 <section class="content">
-	<div class="row">
-		<div class="col-md-12">
+   <div class="row">
+	   <div class="col-md-6" style="float:none;margin:0 auto;max-width:600px;">
 			<!-- general form elements -->
 			<div class="box box-info">
 				<div class="box-header with-border">
@@ -65,6 +65,11 @@ if (strlen($tambah) == 1){
 							<input type="number" name="th_terbit" id="th_terbit" class="form-control" placeholder="Tahun Terbit">
 						</div>
 
+						<div class="form-group">
+							<label>Stok Buku</label>
+							<input type="number" name="stok" id="stok" class="form-control" placeholder="Stok Buku" min="0" value="0">
+						</div>
+
 					</div>
 					<!-- /.box-body -->
 
@@ -79,34 +84,33 @@ if (strlen($tambah) == 1){
 
 <?php
 
-    if (isset ($_POST['Simpan'])){
-    
-        $sql_simpan = "INSERT INTO tb_buku (id_buku,judul_buku,pengarang,penerbit,th_terbit) VALUES (
-           '".$_POST['id_buku']."',
-          '".$_POST['judul_buku']."',
-          '".$_POST['pengarang']."',
-          '".$_POST['penerbit']."',
-          '".$_POST['th_terbit']."')";
-        $query_simpan = mysqli_query($koneksi, $sql_simpan);
-        mysqli_close($koneksi);
+	if (isset ($_POST['Simpan'])){
+		$sql_simpan = "INSERT INTO tb_buku (id_buku,judul_buku,pengarang,penerbit,th_terbit,stok) VALUES (
+		   '".$_POST['id_buku']."',
+		  '".$_POST['judul_buku']."',
+		  '".$_POST['pengarang']."',
+		  '".$_POST['penerbit']."',
+		  '".$_POST['th_terbit']."',
+		  '".$_POST['stok']."')";
+		$query_simpan = mysqli_query($koneksi, $sql_simpan);
+		mysqli_close($koneksi);
 
-    if ($query_simpan){
-
-      echo "<script>
-      Swal.fire({title: 'Tambah Data Berhasil',text: '',icon: 'success',confirmButtonText: 'OK'
-      }).then((result) => {
-          if (result.value) {
-              window.location = 'index.php?page=MyApp/data_buku';
-          }
-      })</script>";
-      }else{
-      echo "<script>
-      Swal.fire({title: 'Tambah Data Gagal',text: '',icon: 'error',confirmButtonText: 'OK'
-      }).then((result) => {
-          if (result.value) {
-              window.location = 'index.php?page=MyApp/add_buku';
-          }
-      })</script>";
-    }
+	if ($query_simpan){
+	  echo "<script>
+	  Swal.fire({title: 'Tambah Data Berhasil',text: '',icon: 'success',confirmButtonText: 'OK'
+	  }).then((result) => {
+		  if (result.value) {
+			  window.location = 'index.php?page=MyApp/data_buku';
+		  }
+	  })</script>";
+	  }else{
+	  echo "<script>
+	  Swal.fire({title: 'Tambah Data Gagal',text: '',icon: 'error',confirmButtonText: 'OK'
+	  }).then((result) => {
+		  if (result.value) {
+			  window.location = 'index.php?page=MyApp/add_buku';
+		  }
+	  })</script>";
+	}
   }
     

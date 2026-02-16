@@ -18,14 +18,14 @@ if (strlen($tambah) == 1){
 
 <section class="content-header">
 	<h1>
-		Sirkulasi
-		<small>Buku</small>
+		Sirkulasi-Buku
+
 	</h1>
 	<ol class="breadcrumb">
 		<li>
 			<a href="index.php">
 				<i class="fa fa-home"></i>
-				<b>Perpus Pelita</b>
+				<b>Kembali</b>
 			</a>
 		</li>
 	</ol>

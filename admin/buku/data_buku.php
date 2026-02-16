@@ -6,7 +6,7 @@
 		<li>
 			<a href="index.php">
 				<i class="fa fa-home"></i>
-				<b>Perpus Pelita</b>
+				<b>Kembali</b>
 			</a>
 		</li>
 	</ol>
@@ -30,6 +30,7 @@
 							<th>Pengarang</th>
 							<th>Penerbit</th>
 							<th>Tahun</th>
+							<th>Stok</th>
 							<th>Kelola</th>
 						</tr>
 					</thead>
@@ -60,7 +61,9 @@
 							<td>
 								<?php echo $data['th_terbit']; ?>
 							</td>
-
+							<td>
+								<?php echo $data['stok']; ?>
+							</td>
 							<td>
 								<a href="?page=MyApp/edit_buku&kode=<?php echo $data['id_buku']; ?>" title="Ubah"
 								 class="btn btn-success">

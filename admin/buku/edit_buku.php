@@ -9,14 +9,14 @@
 
 <section class="content-header">
 	<h1>
-		Master Data
-		<small>Data Buku</small>
+		Master Data-Buku
+		
 	</h1>
 	<ol class="breadcrumb">
 		<li>
 			<a href="index.php">
 				<i class="fa fa-home"></i>
-				<b>Perpus Pelita</b>
+				<b>Kembali</b>
 			</a>
 		</li>
 	</ol>
@@ -64,6 +64,11 @@
 							<input class="form-control" name="th_terbit" value="<?php echo $data_cek['th_terbit']; ?>">
 						</div>
 
+						<div class="form-group">
+							<label>Stok Buku</label>
+							<input type="number" class="form-control" name="stok" value="<?php echo $data_cek['stok']; ?>" min="0">
+						</div>
+
 					</div>
 					<!-- /.box-body -->
 
@@ -79,31 +84,32 @@
 <?php
 
 if (isset ($_POST['Ubah'])){
-    //mulai proses ubah
-    $sql_ubah = "UPDATE tb_buku SET
-        judul_buku='".$_POST['judul_buku']."',
-        pengarang='".$_POST['pengarang']."',
-        penerbit='".$_POST['penerbit']."',
-        th_terbit='".$_POST['th_terbit']."'
-        WHERE id_buku='".$_POST['id_buku']."'";
-    $query_ubah = mysqli_query($koneksi, $sql_ubah);
+	//mulai proses ubah
+	$sql_ubah = "UPDATE tb_buku SET
+		judul_buku='".$_POST['judul_buku']."',
+		pengarang='".$_POST['pengarang']."',
+		penerbit='".$_POST['penerbit']."',
+		th_terbit='".$_POST['th_terbit']."',
+		stok='".$_POST['stok']."'
+		WHERE id_buku='".$_POST['id_buku']."'";
+	$query_ubah = mysqli_query($koneksi, $sql_ubah);
 
-    if ($query_ubah) {
-        echo "<script>
-        Swal.fire({title: 'Ubah Data Berhasil',text: '',icon: 'success',confirmButtonText: 'OK'
-        }).then((result) => {
-            if (result.value) {
-                window.location = 'index.php?page=MyApp/data_buku';
-            }
-        })</script>";
-        }else{
-        echo "<script>
-        Swal.fire({title: 'Ubah Data Gagal',text: '',icon: 'error',confirmButtonText: 'OK'
-        }).then((result) => {
-            if (result.value) {
-                window.location = 'index.php?page=MyApp/data_buku';
-            }
-        })</script>";
-    }
+	if ($query_ubah) {
+		echo "<script>
+		Swal.fire({title: 'Ubah Data Berhasil',text: '',icon: 'success',confirmButtonText: 'OK'
+		}).then((result) => {
+			if (result.value) {
+				window.location = 'index.php?page=MyApp/data_buku';
+			}
+		})</script>";
+		}else{
+		echo "<script>
+		Swal.fire({title: 'Ubah Data Gagal',text: '',icon: 'error',confirmButtonText: 'OK'
+		}).then((result) => {
+			if (result.value) {
+				window.location = 'index.php?page=MyApp/data_buku';
+			}
+		})</script>";
+	}
 }
 
