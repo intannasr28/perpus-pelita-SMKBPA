@@ -5,10 +5,9 @@
         $query_cek = mysqli_query($koneksi, $sql_cek);
         $data_cek = mysqli_fetch_array($query_cek,MYSQLI_BOTH);
     }
-    //menangkap tanggal
+    
     $tgl_p=$data_cek['tgl_pinjam'];
 
-    //membuat tgl kembali
 	$tgl_pp=date('Y-m-d', strtotime('+7 days', strtotime($tgl_p)));
     $tgl_kk=date('Y-m-d', strtotime('+14 days', strtotime($tgl_p)));
 

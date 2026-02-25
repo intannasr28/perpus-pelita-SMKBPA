@@ -12,7 +12,6 @@ if (isset($_SESSION["ses_username"]) == "") {
 
 //KONEKSI DB
 include "inc/koneksi.php";
-// School identity (change values or replace school_logo.png in dist/img/)
 $school_name = "Perpus Pelita"; // change to your school name
 $school_logo_path = "dist/img/logo.png";
 if (!file_exists($school_logo_path)) {
@@ -420,6 +419,12 @@ if (!file_exists($school_logo_path)) {
 						case 'MyApp/print_laporan':
 							include "admin/laporan/print_laporan.php";
 							break;
+						case 'siswa':
+    						include "home/siswa.php";
+    						break;
+						case 'data_buku_siswa':
+   							 include "admin/buku/data_buku_siswa.php";
+   							 break;
 
 
 
@@ -430,13 +435,16 @@ if (!file_exists($school_logo_path)) {
 							break;
 					}
 				} else {
-					// Auto Halaman Home Pengguna
-					if ($data_level == "Administrator") {
-						include "home/admin.php";
-					} elseif ($data_level == "Petugas") {
-						include "home/petugas.php";
-					}
-				}
+    // Jika tidak ada parameter page, arahkan sesuai level
+    if ($data_level == "Administrator") {
+        include "home/admin.php";
+    } elseif ($data_level == "Petugas") {
+        include "home/petugas.php";
+    } elseif ($data_level == "Siswa") {
+        include "home/siswa.php";
+    }
+}
+
 				?>
 
 
@@ -451,7 +459,7 @@ if (!file_exists($school_logo_path)) {
 			<div class="pull-right hidden-xs">
 			</div>
 			<strong>Copyright &copy;
-				<a href="https://www.facebook.com/">Muhammad Ivan Setiawan</a>.</strong> All rights reserved.
+				<a href="https://www.instagram.com/intannasr_?igsh=N3EzcjM0bmg1cGR6/">Intan Komalasari</a>.</strong> All rights reserved.
 		</footer>
 		<div class="control-sidebar-bg"></div>
 		-->

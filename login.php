@@ -217,6 +217,9 @@ if (isset($_POST['btnLogin'])) {
 						<button type="submit" class="btn btn-primary btn-block btn-flat" name="btnLogin" title="Masuk Sistem">
 							<b>Masuk</b>
 						</button>
+						<div class="text-center" style="margin-top:10px;">
+    <p>Belum punya akun siswa? <a href="register.php"><b>Daftar di sini</b></a></p>
+</div>
 					</div>
 					<!-- /.col -->
 				</div>
