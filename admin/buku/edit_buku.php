@@ -69,14 +69,26 @@
 							<input type="number" class="form-control" name="stok" value="<?php echo $data_cek['stok']; ?>" min="0">
 						</div>
 
+					<div class="form-group">
+						<label>Kategori Buku</label>
+						<select name="kategori" id="kategori" class="form-control" required>
+							<option value="Pelajaran" <?php echo ($data_cek['kategori'] == 'Pelajaran') ? 'selected' : ''; ?>>Pelajaran (Buku Sekolah)</option>
+							<option value="Fiksi" <?php echo ($data_cek['kategori'] == 'Fiksi') ? 'selected' : ''; ?>>Fiksi (Novel, Cerita)</option>
+							<option value="Non Fiksi" <?php echo ($data_cek['kategori'] == 'Non Fiksi') ? 'selected' : ''; ?>>Non Fiksi (Ilmiah, Biografi)</option>
+							<option value="Referensi" <?php echo ($data_cek['kategori'] == 'Referensi') ? 'selected' : ''; ?>>Referensi (Kamus, Ensiklopedi)</option>
+							<option value="Komik" <?php echo ($data_cek['kategori'] == 'Komik') ? 'selected' : ''; ?>>Komik</option>
+							<option value="Lainnya" <?php echo ($data_cek['kategori'] == 'Lainnya') ? 'selected' : ''; ?>>Lainnya</option>
+						</select>
 					</div>
-					<!-- /.box-body -->
 
-					<div class="box-footer">
-						<input type="submit" name="Ubah" value="Ubah" class="btn btn-success">
-						<a href="?page=MyApp/data_buku" class="btn btn-warning">Batal</a>
-					</div>
-				</form>
+				</div>
+				<!-- /.box-body -->
+
+				<div class="box-footer">
+					<input type="submit" name="Ubah" value="Ubah" class="btn btn-success">
+					<a href="?page=MyApp/data_buku" class="btn btn-warning">Batal</a>
+				</div>
+			</form>
 			</div>
 			<!-- /.box -->
 </section>
@@ -90,7 +102,8 @@ if (isset ($_POST['Ubah'])){
 		pengarang='".$_POST['pengarang']."',
 		penerbit='".$_POST['penerbit']."',
 		th_terbit='".$_POST['th_terbit']."',
-		stok='".$_POST['stok']."'
+		stok='".$_POST['stok']."',
+		kategori='".$_POST['kategori']."'
 		WHERE id_buku='".$_POST['id_buku']."'";
 	$query_ubah = mysqli_query($koneksi, $sql_ubah);
 

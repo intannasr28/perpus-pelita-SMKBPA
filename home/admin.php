@@ -38,6 +38,24 @@
 	}
 ?>
 
+<?php
+	// Best Peminjam (non-textbook materials like novels)
+	$sql_best = $koneksi->query("
+		SELECT a.id_anggota, a.nama, COUNT(s.id_sk) as jumlah_pinjam 
+		FROM tb_sirkulasi s 
+		JOIN tb_buku b ON s.id_buku = b.id_buku 
+		JOIN tb_anggota a ON s.id_anggota = a.id_anggota 
+		WHERE b.kategori != 'Pelajaran' 
+		GROUP BY a.id_anggota, a.nama 
+		ORDER BY jumlah_pinjam DESC 
+		LIMIT 10
+	");
+	$best_peminjam = array();
+	while ($data = $sql_best->fetch_assoc()) {
+		$best_peminjam[] = $data;
+	}
+?>
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>
@@ -125,3 +143,63 @@
 				</a>
 			</div>
 		</div>
+	</div>
+	<!-- /.row -->
+
+	<!-- Best Peminjam Section -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box box-success">
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						<i class="fa fa-star"></i> Peminjam Terbaik (Buku Non-Pelajaran)
+					</h3>
+					<small class="pull-right">Berdasarkan jumlah peminjaman novel, fiksi, dan buku referensi lainnya</small>
+				</div>
+				<div class="box-body">
+					<?php if (count($best_peminjam) > 0): ?>
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th style="width: 50px; text-align: center;">Peringkat</th>
+								<th>ID Anggota</th>
+								<th>Nama</th>
+								<th style="width: 150px; text-align: center;">Jumlah Pinjam</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php 
+							$rank = 1;
+							foreach ($best_peminjam as $peminjam): 
+							$badge_color = '';
+							if ($rank == 1) $badge_color = 'badge-danger';
+							else if ($rank == 2) $badge_color = 'badge-warning';
+							else if ($rank == 3) $badge_color = 'badge-info';
+							else $badge_color = 'badge-primary';
+							?>
+							<tr>
+								<td style="text-align: center;">
+									<span class="badge <?php echo $badge_color; ?>" style="font-size: 14px;"><?php echo $rank; ?></span>
+								</td>
+								<td><strong><?php echo $peminjam['id_anggota']; ?></strong></td>
+								<td><?php echo $peminjam['nama']; ?></td>
+								<td style="text-align: center;">
+									<span class="badge badge-success"><?php echo $peminjam['jumlah_pinjam']; ?> buku</span>
+								</td>
+							</tr>
+							<?php 
+							$rank++;
+							endforeach; 
+							?>
+						</tbody>
+					</table>
+					<?php else: ?>
+					<div class="alert alert-info">
+						<i class="fa fa-info-circle"></i> Belum ada peminjaman buku non-pelajaran
+					</div>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.row -->

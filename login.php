@@ -1,4 +1,17 @@
 <?php
+// PENTING: Set custom session save path SEBELUM session_start()
+$tmp_path = realpath(__DIR__) . DIRECTORY_SEPARATOR . 'tmp';
+if (!is_dir($tmp_path)) {
+	mkdir($tmp_path, 0777, true);
+}
+// Set sebelum session_start()
+ini_set('session.save_path', $tmp_path);
+
+// Session harus dimulai SEBELUM apapun
+if (session_status() == PHP_SESSION_NONE) {
+	session_start();
+}
+
 include "inc/koneksi.php";
 
 if (isset($_POST['btnLogin'])) {  
@@ -11,12 +24,23 @@ if (isset($_POST['btnLogin'])) {
 	$jumlah_login = mysqli_num_rows($query_login);
 
 	if ($jumlah_login == 1) {
-		session_start();
+		// Session sudah dimulai di atas
 		$_SESSION["ses_id"] = $data_login["id_pengguna"];
 		$_SESSION["ses_nama"] = $data_login["nama_pengguna"];
 		$_SESSION["ses_username"] = $data_login["username"];
 		$_SESSION["ses_password"] = $data_login["password"];
 		$_SESSION["ses_level"] = $data_login["level"];
+		
+		// PENTING: Force write session ke disk dengan explicit file I/O
+		session_write_close();
+		
+		// Manual write untuk memastikan file tidak kosong (fix untuk Windows)
+		$session_file = $tmp_path . '/sess_' . session_id();
+		$session_data = session_encode();
+		@file_put_contents($session_file, $session_data);
+		
+		// Sleep sebentar untuk memastikan file ditulis ke disk
+		usleep(200000); // 200ms
 		
 		header("location: index.php");
 		exit;

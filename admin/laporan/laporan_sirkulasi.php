@@ -48,7 +48,8 @@
 				tb_sirkulasi.id_sk,
 				tb_sirkulasi.tgl_pinjam,
 				tb_sirkulasi.tgl_kembali,
-                  	if(datediff(now( ) , tb_sirkulasi.tgl_kembali)<=0,0,datediff(now( ) , tb_sirkulasi.tgl_kembali) ) telat_pengembalian FROM tb_sirkulasi 
+                  	IF(DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))<=0, 0, DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))) AS telat_pengembalian 
+					FROM tb_sirkulasi 
 					JOIN tb_anggota ON tb_anggota.id_anggota=tb_sirkulasi.id_anggota 
 					JOIN tb_buku ON tb_buku.id_buku=tb_sirkulasi.id_buku where tb_sirkulasi.status='KEM'
 					Order By id_anggota");

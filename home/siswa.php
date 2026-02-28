@@ -19,7 +19,7 @@ $data_populer = $sql_populer->fetch_assoc();
 ?>
 
 <section class="content-header">
-    <h1>Dashboard Siswa <small><?php echo $data_nama; ?></small></h1>
+    <h1>Dashboard Siswa <small style="color: #0073b7; font-weight: 500;"><?php echo $data_nama; ?></small></h1>
 </section>
 
 <section class="content">

@@ -81,19 +81,20 @@ CREATE TABLE `tb_buku` (
   `judul_buku` varchar(30) NOT NULL,
   `pengarang` varchar(30) NOT NULL,
   `penerbit` varchar(30) NOT NULL,
-  `th_terbit` year(4) NOT NULL
+  `th_terbit` year(4) NOT NULL,
+  `stok` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `tb_buku`
 --
 
-INSERT INTO `tb_buku` (`id_buku`, `judul_buku`, `pengarang`, `penerbit`, `th_terbit`) VALUES
-('B001', 'Matematika', 'anastasya', 'armi print', 2010),
-('B002', 'RPL 2', 'Eko', 'UMK', 2020),
-('B003', 'C++', 'Anton', 'Toni Perc', 2010),
-('B004', 'CI 4', 'anastasya', 'armi print', 2009),
-('B005', 'Data Mining', 'Anton', 'Toni Perc', 2020);
+INSERT INTO `tb_buku` (`id_buku`, `judul_buku`, `pengarang`, `penerbit`, `th_terbit`, `stok`) VALUES
+('B001', 'Matematika', 'anastasya', 'armi print', 2010, 5),
+('B002', 'RPL 2', 'Eko', 'UMK', 2020, 3),
+('B003', 'C++', 'Anton', 'Toni Perc', 2010, 4),
+('B004', 'CI 4', 'anastasya', 'armi print', 2009, 2),
+('B005', 'Data Mining', 'Anton', 'Toni Perc', 2020, 6);
 
 -- --------------------------------------------------------
 
@@ -106,7 +107,7 @@ CREATE TABLE `tb_pengguna` (
   `nama_pengguna` varchar(20) NOT NULL,
   `username` varchar(20) NOT NULL,
   `password` varchar(35) NOT NULL,
-  `level` enum('Administrator','Petugas','','') NOT NULL
+  `level` enum('Administrator','Petugas','Siswa') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -141,6 +142,19 @@ INSERT INTO `tb_sirkulasi` (`id_sk`, `id_buku`, `id_anggota`, `tgl_pinjam`, `tgl
 ('S002', 'B002', 'A001', '2020-06-13', '2020-06-20', 'PIN'),
 ('S003', 'B003', 'A002', '2020-06-22', '2020-06-29', 'PIN'),
 ('S004', 'B002', 'A005', '2020-06-23', '2020-06-30', 'PIN');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_favorit`
+--
+
+CREATE TABLE `tb_favorit` (
+  `id_favorit` int(11) NOT NULL,
+  `id_anggota` varchar(10) NOT NULL,
+  `id_buku` varchar(10) NOT NULL,
+  `tanggal_ditambahkan` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
@@ -181,6 +195,14 @@ ALTER TABLE `tb_sirkulasi`
   ADD KEY `id_anggota` (`id_anggota`);
 
 --
+-- Indeks untuk tabel `tb_favorit`
+--
+ALTER TABLE `tb_favorit`
+  ADD PRIMARY KEY (`id_favorit`),
+  ADD KEY `id_anggota` (`id_anggota`),
+  ADD KEY `id_buku` (`id_buku`);
+
+--
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
@@ -195,6 +217,12 @@ ALTER TABLE `log_pinjam`
 --
 ALTER TABLE `tb_pengguna`
   MODIFY `id_pengguna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_favorit`
+--
+ALTER TABLE `tb_favorit`
+  MODIFY `id_favorit` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -213,6 +241,13 @@ ALTER TABLE `log_pinjam`
 ALTER TABLE `tb_sirkulasi`
   ADD CONSTRAINT `tb_sirkulasi_ibfk_1` FOREIGN KEY (`id_buku`) REFERENCES `tb_buku` (`id_buku`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tb_sirkulasi_ibfk_2` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tb_favorit`
+--
+ALTER TABLE `tb_favorit`
+  ADD CONSTRAINT `tb_favorit_ibfk_1` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_favorit_ibfk_2` FOREIGN KEY (`id_buku`) REFERENCES `tb_buku` (`id_buku`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

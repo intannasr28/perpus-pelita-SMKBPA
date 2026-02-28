@@ -1,5 +1,25 @@
 <?php
 include "inc/koneksi.php";
+
+// Auto-generate ID Anggota
+$carikode = mysqli_query($koneksi, "SELECT id_anggota FROM tb_anggota ORDER BY id_anggota DESC LIMIT 1");
+$datakode = mysqli_fetch_array($carikode);
+$kode = $datakode['id_anggota'];
+
+if ($kode) {
+    $urut = substr($kode, 1, 3);
+    $tambah = (int) $urut + 1;
+} else {
+    $tambah = 1;
+}
+
+if (strlen($tambah) == 1) {
+    $format_id = "A" . "00" . $tambah;
+} else if (strlen($tambah) == 2) {
+    $format_id = "A" . "0" . $tambah;
+} else if (strlen($tambah) == 3) {
+    $format_id = "A" . $tambah;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,7 +42,9 @@ include "inc/koneksi.php";
             <p class="login-box-msg">Daftar Anggota Baru</p>
             <form action="" method="post">
                 <div class="form-group has-feedback">
-                    <input type="text" name="id_anggota" class="form-control" placeholder="NIS / ID Anggota" required>
+                    <label style="font-size: 12px; color: #666;">ID Anggota (Auto-Generate)</label>
+                    <input type="text" name="id_anggota" class="form-control" value="<?php echo $format_id; ?>" readonly style="background-color: #f5f5f5;">
+                    <small style="color: #999;">ID Anda akan dibuat secara otomatis</small>
                 </div>
                 <div class="form-group has-feedback">
                     <input type="text" name="nama" class="form-control" placeholder="Nama Lengkap" required>
@@ -76,12 +98,15 @@ if (isset($_POST['btnDaftar'])) {
 
     if ($query_mhs && $query_user) {
         echo "<script>
-            Swal.fire({title: 'Registrasi Berhasil', text: 'Silahkan Login menggunakan NIS Anda', icon: 'success'}
-            ).then((result) => { if (result.value) { window.location = 'login.php'; } })
+            Swal.fire({
+                title: 'Registrasi Berhasil', 
+                text: 'ID Anggota Anda: " . $id_anggota . ". Silahkan Login menggunakan ID dan Password Anda', 
+                icon: 'success'
+            }).then((result) => { if (result.value) { window.location = 'login.php'; } })
         </script>";
     } else {
         echo "<script>
-            Swal.fire({title: 'Registrasi Gagal', text: 'NIS mungkin sudah terdaftar', icon: 'error'}
+            Swal.fire({title: 'Registrasi Gagal', text: 'Terjadi kesalahan saat registrasi', icon: 'error'}
             ).then((result) => { if (result.value) { window.location = 'register.php'; } })
         </script>";
     }

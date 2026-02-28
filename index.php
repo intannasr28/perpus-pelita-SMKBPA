@@ -1,14 +1,26 @@
 <?php
-//Mulai Sesion
-session_start();
-if (isset($_SESSION["ses_username"]) == "") {
-	header("location: login.php");
-} else {
-	$data_id = $_SESSION["ses_id"];
-	$data_nama = $_SESSION["ses_nama"];
-	$data_user = $_SESSION["ses_username"];
-	$data_level = $_SESSION["ses_level"];
+// PENTING: Set custom session save path SEBELUM session_start()
+$tmp_path = realpath(__DIR__) . DIRECTORY_SEPARATOR . 'tmp';
+if (!is_dir($tmp_path)) {
+	mkdir($tmp_path, 0777, true);
 }
+ini_set('session.save_path', $tmp_path);
+
+// Jangan gunakan session_start() dengan check conditional
+// Karena kita mau SELALU resume existing session jika ada
+session_start();
+
+// Cek apakah user sudah login
+if (empty($_SESSION["ses_username"])) {
+	header("location: login.php");
+	exit;
+}
+
+// Ambil data session
+$data_id = $_SESSION["ses_id"];
+$data_nama = $_SESSION["ses_nama"];
+$data_user = $_SESSION["ses_username"];
+$data_level = $_SESSION["ses_level"];
 
 //KONEKSI DB
 include "inc/koneksi.php";
@@ -304,6 +316,70 @@ if (!file_exists($school_logo_path)) {
 						<li class="header">SETTING</li>
 
 					<?php
+					} elseif ($data_level == "Siswa") {
+					?>
+
+						<li class="treeview">
+							<a href="?page=siswa/dashboard_siswa">
+								<i class="fa fa-dashboard"></i>
+								<span>Dashboard</span>
+								<span class="pull-right-container">
+								</span>
+							</a>
+						</li>
+
+						<li class="treeview">
+							<a href="#">
+								<i class="fa fa-book"></i>
+								<span>Data Buku</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li>
+									<a href="?page=siswa/data_buku_siswa">
+										<i class="fa fa-list"></i>Lihat Daftar Buku</a>
+								</li>
+								<li>
+									<a href="?page=siswa/data_favorit_siswa">
+										<i class="fa fa-heart"></i>Buku Favorit</a>
+								</li>
+							</ul>
+						</li>
+
+						<li class="treeview">
+							<a href="#">
+								<i class="fa fa-refresh"></i>
+								<span>Peminjaman</span>
+								<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li>
+									<a href="?page=siswa/pinjam_buku_siswa">
+										<i class="fa fa-plus"></i>Pinjam Buku</a>
+								</li>
+								<li>
+									<a href="?page=siswa/riwayat_pinjam_siswa">
+										<i class="fa fa-history"></i>Riwayat Pinjam</a>
+								</li>
+							</ul>
+						</li>
+
+						<li class="header">SETTING</li>
+
+						<li class="treeview">
+							<a href="?page=siswa/profile_siswa">
+								<i class="fa fa-user"></i>
+								<span>Profile</span>
+								<span class="pull-right-container">
+								</span>
+							</a>
+						</li>
+
+					<?php
 					}
 					?>
 
@@ -419,12 +495,32 @@ if (!file_exists($school_logo_path)) {
 						case 'MyApp/print_laporan':
 							include "admin/laporan/print_laporan.php";
 							break;
-						case 'siswa':
-    						include "home/siswa.php";
-    						break;
-						case 'data_buku_siswa':
-   							 include "admin/buku/data_buku_siswa.php";
-   							 break;
+
+						//Siswa
+						case 'siswa/dashboard_siswa':
+							include "admin/siswa/dashboard_siswa.php";
+							break;
+						case 'siswa/data_buku_siswa':
+							include "admin/siswa/data_buku_siswa.php";
+							break;
+						case 'siswa/data_favorit_siswa':
+							include "admin/siswa/data_favorit_siswa.php";
+							break;
+						case 'siswa/profile_siswa':
+							include "admin/siswa/profile_siswa.php";
+							break;
+						case 'siswa/edit_profil':
+							include "admin/siswa/edit_profil.php";
+							break;
+						case 'siswa/ganti_password':
+							include "admin/siswa/ganti_password.php";
+							break;
+						case 'siswa/pinjam_buku_siswa':
+							include "admin/siswa/pinjam_buku_siswa.php";
+							break;
+						case 'siswa/riwayat_pinjam_siswa':
+							include "admin/siswa/riwayat_pinjam_siswa.php";
+							break;
 
 
 
@@ -511,6 +607,9 @@ if (!file_exists($school_logo_path)) {
 				$(".select2").select2();
 			});
 		</script>
+
+		<!-- Toggle Favorit Script - Load di akhir setelah jQuery dan DataTables ready -->
+		<script src="assets/js/toggle-favorit.js"></script>
 </body>
 
 </html>

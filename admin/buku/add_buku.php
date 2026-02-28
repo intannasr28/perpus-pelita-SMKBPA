@@ -70,6 +70,19 @@ if (strlen($tambah) == 1){
 							<input type="number" name="stok" id="stok" class="form-control" placeholder="Stok Buku" min="0" value="0">
 						</div>
 
+						<div class="form-group">
+							<label>Kategori Buku</label>
+							<select name="kategori" id="kategori" class="form-control" required>
+								<option value="">-- Pilih Kategori --</option>
+								<option value="Pelajaran">Pelajaran (Buku Sekolah)</option>
+								<option value="Fiksi">Fiksi (Novel, Cerita)</option>
+								<option value="Non Fiksi">Non Fiksi (Ilmiah, Biografi)</option>
+								<option value="Referensi">Referensi (Kamus, Ensiklopedi)</option>
+								<option value="Komik">Komik</option>
+								<option value="Lainnya">Lainnya</option>
+							</select>
+						</div>
+
 					</div>
 					<!-- /.box-body -->
 
@@ -85,13 +98,14 @@ if (strlen($tambah) == 1){
 <?php
 
 	if (isset ($_POST['Simpan'])){
-		$sql_simpan = "INSERT INTO tb_buku (id_buku,judul_buku,pengarang,penerbit,th_terbit,stok) VALUES (
+		$sql_simpan = "INSERT INTO tb_buku (id_buku,judul_buku,pengarang,penerbit,th_terbit,stok,kategori) VALUES (
 		   '".$_POST['id_buku']."',
 		  '".$_POST['judul_buku']."',
 		  '".$_POST['pengarang']."',
 		  '".$_POST['penerbit']."',
 		  '".$_POST['th_terbit']."',
-		  '".$_POST['stok']."')";
+		  '".$_POST['stok']."',
+		  '".$_POST['kategori']."')";
 		$query_simpan = mysqli_query($koneksi, $sql_simpan);
 		mysqli_close($koneksi);
 

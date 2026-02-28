@@ -30,6 +30,7 @@
 							<th>Pengarang</th>
 							<th>Penerbit</th>
 							<th>Tahun</th>
+							<th>Kategori</th>
 							<th>Stok</th>
 							<th>Kelola</th>
 						</tr>
@@ -60,6 +61,19 @@
 							</td>
 							<td>
 								<?php echo $data['th_terbit']; ?>
+							</td>
+							<td>
+								<?php 
+									$kategori = isset($data['kategori']) ? $data['kategori'] : 'Pelajaran';
+									$badge_class = '';
+									if ($kategori == 'Pelajaran') $badge_class = 'label-info';
+									else if ($kategori == 'Fiksi') $badge_class = 'label-success';
+									else if ($kategori == 'Non Fiksi') $badge_class = 'label-warning';
+									else if ($kategori == 'Referensi') $badge_class = 'label-primary';
+									else if ($kategori == 'Komik') $badge_class = 'label-danger';
+									else $badge_class = 'label-default';
+								?>
+								<span class="label <?php echo $badge_class; ?>"><?php echo $kategori; ?></span>
 							</td>
 							<td>
 								<?php echo $data['stok']; ?>
