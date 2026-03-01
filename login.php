@@ -31,6 +31,15 @@ if (isset($_POST['btnLogin'])) {
 		$_SESSION["ses_password"] = $data_login["password"];
 		$_SESSION["ses_level"] = $data_login["level"];
 		
+		// Log kunjungan ke tb_kunjungan menggunakan NOW() agar konsisten dengan timezone database
+		$id_anggota = $data_login["username"];
+		$nama_pengunjung = $data_login["nama_pengguna"];
+		$level = $data_login["level"];
+		
+		$sql_log = "INSERT INTO tb_kunjungan (id_anggota, nama, level, tgl_kunjungan, waktu_kunjungan, jenis_kunjungan) 
+					VALUES ('$id_anggota', '$nama_pengunjung', '$level', DATE(NOW()), TIME(NOW()), 'Login')";
+		@mysqli_query($koneksi, $sql_log); // @ untuk ignore error jika tabel belum ada
+		
 		// PENTING: Force write session ke disk dengan explicit file I/O
 		session_write_close();
 		
@@ -195,7 +204,29 @@ if (isset($_POST['btnLogin'])) {
 			   letter-spacing: 0.5px;
 			   text-shadow: 0 1px 4px rgba(0,0,0,0.08);
 		   }
-	</style>
+		   .text-center a {
+			   transition: all 0.3s ease;
+			   color: #fff !important;
+		   }
+		   .text-center a:hover {
+			   color: #e0e0e0 !important;
+			   text-shadow: 0 0 8px rgba(255,255,255,0.4);
+		   }
+		   .register-link {
+				color: #1a237e;
+				font-weight: 600;
+				text-decoration: underline;
+			}
+
+			.register-link:hover {
+				color: #002171;
+				text-decoration: underline;
+			}
+			.register-container {
+				position: relative;
+				z-index: 5;
+			}
+			</style>
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -233,23 +264,28 @@ if (isset($_POST['btnLogin'])) {
 					   <span class="fa fa-eye form-control-feedback" id="showHidePassword" style="pointer-events:auto; right:12px;"></span>
 				   </div>
 				<div class="row">
-					<div class="col-xs-8">
-
-					</div>
-					<!-- /.col -->
-					<div class="col-xs-4">
-						<button type="submit" class="btn btn-primary btn-block btn-flat" name="btnLogin" title="Masuk Sistem">
-							<b>Masuk</b>
-						</button>
-						<div class="text-center" style="margin-top:10px;">
-    <p>Belum punya akun siswa? <a href="register.php"><b>Daftar di sini</b></a></p>
+	<div class="col-xs-12">
+		<button type="submit" 
+		        class="btn btn-primary btn-block btn-flat" 
+		        name="btnLogin" 
+		        title="Masuk Sistem">
+			<b>Masuk</b>
+		</button>
+	</div>
 </div>
-					</div>
-					<!-- /.col -->
-				</div>
+
+<br>
+
+<div class="text-center register-container">
+	<p>
+		Belum punya akun?
+		<a href="register.php" class="register-link">
+			Daftar di sini
+		</a>
+	</p>
+</div>
 			</form>
 			<!-- /.social-auth-links -->
-
 		</div>
 		<!-- /.login-box-body -->
 	</div>

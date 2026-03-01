@@ -22,16 +22,11 @@ if (isset($_POST['proses_bulk_kembali'])) {
     $failed = 0;
     
     foreach ($_POST['select_sk'] as $id_sk) {
-        // Ambil jumlah yang dikembalikan untuk setiap id_sk
-        $jumlah_kembali = isset($jumlah_array[$id_sk]) ? intval($jumlah_array[$id_sk]) : 1;
-        
-        // Safety check: jumlah minimal 1
-        if ($jumlah_kembali < 1) {
-            $jumlah_kembali = 1;
-        }
-        
-        // Ambil detail peminjaman
-        $sql_detail = "SELECT id_buku, id_anggota FROM tb_sirkulasi WHERE id_sk = '$id_sk'";
+        // OPSI 2: Ambil detail dari tb_sirkulasi_detail (bisa ada multiple tapi untuk siswa hanya 1)
+        $sql_detail = "SELECT d.id_detail, d.id_buku, d.jumlah, s.id_anggota 
+                       FROM tb_sirkulasi_detail d
+                       JOIN tb_sirkulasi s ON d.id_sk = s.id_sk
+                       WHERE d.id_sk = '$id_sk' AND d.status = 'PIN'";
         $result_detail = mysqli_query($koneksi, $sql_detail);
         $detail = mysqli_fetch_array($result_detail);
         
@@ -42,11 +37,22 @@ if (isset($_POST['proses_bulk_kembali'])) {
         
         $id_buku = $detail['id_buku'];
         $id_anggota = $detail['id_anggota'];
+        $jumlah_kembali = $detail['jumlah'];
         
-        // Update status dan tanggal kembali
+        // Ambil nama anggota untuk logging
+        $sql_anggota = "SELECT nama FROM tb_anggota WHERE id_anggota='$id_anggota'";
+        $result_anggota = mysqli_query($koneksi, $sql_anggota);
+        $row_anggota = mysqli_fetch_array($result_anggota);
+        $nama_anggota = $row_anggota['nama'];
+        
+        // Update status detail dan master SK
+        $sql_update_detail = "UPDATE tb_sirkulasi_detail SET 
+            status='KEM' 
+            WHERE id_sk='$id_sk'";
+        
         $sql_update = "UPDATE tb_sirkulasi SET 
             status='KEM', 
-            tgl_kembali='$tgl_kembali' 
+            tgl_kembali=DATE(NOW()) 
             WHERE id_sk='$id_sk'";
         
         // Update stok buku (kembalikan jumlah yang dikembalikan)
@@ -54,13 +60,20 @@ if (isset($_POST['proses_bulk_kembali'])) {
         
         // Insert ke log pengembalian (opsional, untuk tracking)
         $sql_log = "INSERT INTO log_kembali (id_sk, id_buku, id_anggota, tgl_kembali, jumlah_kembali) 
-                    VALUES ('$id_sk', '$id_buku', '$id_anggota', '$tgl_kembali', '$jumlah_kembali')";
+                    VALUES ('$id_sk', '$id_buku', '$id_anggota', DATE(NOW()), $jumlah_kembali)";
+        
+        // Log aktivitas pengembalian ke tb_kunjungan menggunakan NOW()
+        $petugas_id = $_SESSION['ses_username'];
+        $sql_kunjungan = "INSERT INTO tb_kunjungan (id_anggota, nama, level, tgl_kunjungan, waktu_kunjungan, jenis_aktivitas, id_buku, id_sk, keterangan) 
+                          VALUES ('$id_anggota', '$nama_anggota', 'Siswa', DATE(NOW()), TIME(NOW()), 'Pengembalian', '$id_buku', '$id_sk', 'Bulk return $jumlah_kembali buku(s) oleh $petugas_id')";
         
         // Execute queries
+        $exec_update_detail = mysqli_query($koneksi, $sql_update_detail);
         $exec_update = mysqli_query($koneksi, $sql_update);
         $exec_stok = mysqli_query($koneksi, $sql_stok);
+        @mysqli_query($koneksi, $sql_kunjungan);
         
-        if ($exec_update && $exec_stok) {
+        if ($exec_update_detail && $exec_update && $exec_stok) {
             // Optional: insert log
             @mysqli_query($koneksi, $sql_log);
             $success++;

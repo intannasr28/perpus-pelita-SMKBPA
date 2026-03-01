@@ -34,6 +34,7 @@
 								<th>No</th>
 								<th>ID SKL</th>
 								<th>Buku</th>
+								<th>Jumlah</th>
 								<th>Peminjam</th>
 								<th>Tgl Pinjam</th>
 								<th>Jatuh Tempo</th>
@@ -45,14 +46,19 @@
 
 						<?php
 						$no = 1;
-						$sql = $koneksi->query("SELECT s.id_sk, b.judul_buku,
+						// OPSI 2: Query dari tb_sirkulasi_detail (WHERE status='PIN')
+						$sql = $koneksi->query("SELECT s.id_sk, b.judul_buku, d.jumlah,
 				  a.id_anggota,
 				  a.nama,
 				  s.tgl_pinjam, 
 				  s.tgl_kembali,
-				  s.id_buku
-                  from tb_sirkulasi s inner join tb_buku b on s.id_buku=b.id_buku
-				  inner join tb_anggota a on s.id_anggota=a.id_anggota where status='PIN' order by tgl_pinjam desc");
+				  d.id_buku
+                  from tb_sirkulasi s 
+                  INNER JOIN tb_sirkulasi_detail d ON s.id_sk = d.id_sk
+                  INNER JOIN tb_buku b ON d.id_buku = b.id_buku
+				  INNER JOIN tb_anggota a ON s.id_anggota = a.id_anggota 
+				  WHERE d.status='PIN' 
+				  ORDER BY s.tgl_pinjam DESC");
 						while ($data = $sql->fetch_assoc()) {
 						?>
 
@@ -68,6 +74,9 @@
 								</td>
 								<td>
 									<?php echo $data['judul_buku']; ?>
+								</td>
+								<td style="text-align: center;">
+									<strong><?php echo $data['jumlah']; ?></strong> buku
 								</td>
 								<td>
 									<?php echo $data['id_anggota']; ?>

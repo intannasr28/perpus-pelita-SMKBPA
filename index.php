@@ -214,11 +214,12 @@ if (!file_exists($school_logo_path)) {
 									<a href="?page=laporan_sirkulasi">
 										<i class="fa fa-file"></i>Laporan Sirkulasi</a>
 								</li>
+								<li>
+									<a href="?page=statistik_pengunjung">
+										<i class="fa fa-bar-chart"></i>Statistik Pengunjung</a>
+								</li>
 							</ul>
 						</li>
-
-
-
 
 						<li class="header">SETTING</li>
 
@@ -309,8 +310,10 @@ if (!file_exists($school_logo_path)) {
 								<li>
 									<a href="?page=laporan_sirkulasi">
 										<i class="fa fa-file"></i>Laporan Sirkulasi</a>
-								</li>
-							</ul>
+								</li>							<li>
+								<a href="?page=statistik_pengunjung">
+									<i class="fa fa-bar-chart"></i>Statistik Pengunjung</a>
+							</li>							</ul>
 						</li>
 
 						<li class="header">SETTING</li>
@@ -491,8 +494,9 @@ if (!file_exists($school_logo_path)) {
 							//laporan
 						case 'laporan_sirkulasi':
 							include "admin/laporan/laporan_sirkulasi.php";
-							break;
-						case 'MyApp/print_laporan':
+							break;					case 'statistik_pengunjung':
+						include "admin/laporan/statistik_pengunjung.php";
+						break;						case 'MyApp/print_laporan':
 							include "admin/laporan/print_laporan.php";
 							break;
 

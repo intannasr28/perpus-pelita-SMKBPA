@@ -169,67 +169,62 @@ if (strlen($tambah) == 1){
 		$urut = substr($kode, 1, 3);
 		$urut = (int)$urut;
 		
-		// Insert multiple records sesuai jumlah
-		$success_count = 0;
-		$error_count = 0;
+		// OPSI 2: 1 SK = 1 Transaksi, berapapun qty
+		$tambah = $urut + 1;
+		$id_sk_new = 'S' . str_pad($tambah, 3, '0', STR_PAD_LEFT);
 		
-		for ($i = 0; $i < $jumlah; $i++) {
-			$tambah = $urut + $i + 1;
-			$id_sk_new = 'S' . str_pad($tambah, 3, '0', STR_PAD_LEFT);
-			
-			$sql_simpan = "INSERT INTO tb_sirkulasi (id_sk,id_buku,id_anggota,tgl_pinjam,status,tgl_kembali) VALUES (
-			   '$id_sk_new',
-			  '$id_buku',
-			  '".$_POST['id_anggota']."',
-			  '$tgl_p',
-			  'PIN',
-			  '$tgl_k');";
-			$sql_simpan .= "INSERT INTO log_pinjam (id_buku,id_anggota,tgl_pinjam) VALUES (
-				'$id_buku',
-				'".$_POST['id_anggota']."',
-				'$tgl_p')";
-				
-			$query_simpan = mysqli_multi_query($koneksi, $sql_simpan);
-			
-			if ($query_simpan) {
-				$success_count++;
-			} else {
-				$error_count++;
-			}
-		}
+		// Insert peminjaman sekali saja (Master Transaksi)
+		$sql_simpan = "INSERT INTO tb_sirkulasi (id_sk,id_buku,id_anggota,tgl_pinjam,status,tgl_kembali) VALUES (
+		   '$id_sk_new',
+		  '$id_buku',
+		  '".$_POST['id_anggota']."',
+		  '$tgl_p',
+		  'PIN',
+		  '$tgl_k');";
 		
-		// Decrement stok sebanyak jumlah yang berhasil
-		if ($success_count > 0) {
-			mysqli_query($koneksi, "UPDATE tb_buku SET stok = stok - $success_count WHERE id_buku='$id_buku'");
-		}
+		// Insert detail buku dengan quantity
+		$sql_simpan .= "INSERT INTO tb_sirkulasi_detail (id_sk, id_buku, jumlah, status) 
+					   VALUES ('$id_sk_new', '$id_buku', $jumlah, 'PIN');";
 		
-        mysqli_close($koneksi);
+		// Log peminjaman
+		$sql_simpan .= "INSERT INTO log_pinjam (id_buku,id_anggota,tgl_pinjam) VALUES (
+			'$id_buku',
+			'".$_POST['id_anggota']."',
+			'$tgl_p');";
+		
+		// Log aktivitas peminjaman ke tb_kunjungan
+		$id_anggota = $_POST['id_anggota'];
+		$nama_anggota = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT nama FROM tb_anggota WHERE id_anggota='$id_anggota'"))['nama'];
+		$petugas_id = $_SESSION['ses_username'];
+		
+		// Log peminjaman ke tb_kunjungan menggunakan NOW() untuk konsistensi timezone
+		$sql_simpan .= "INSERT INTO tb_kunjungan (id_anggota, nama, level, tgl_kunjungan, waktu_kunjungan, jenis_aktivitas, id_buku, id_sk, keterangan) 
+					   VALUES ('$id_anggota', '$nama_anggota', 'Siswa', DATE(NOW()), TIME(NOW()), 'Peminjaman', '$id_buku', '$id_sk_new', 'Input oleh $petugas_id');";
+		
+		// Decrement stok sebanyak jumlah yang dipinjam
+		$sql_simpan .= "UPDATE tb_buku SET stok = stok - $jumlah WHERE id_buku='$id_buku';";
+		
+		$query_simpan = mysqli_multi_query($koneksi, $sql_simpan);
+		
+		mysqli_close($koneksi);
 
-    if ($success_count == $jumlah) {
-      echo "<script>
-      Swal.fire({title: 'Tambah Data Berhasil',text: 'Berhasil meminjamkan $success_count buku. Stok buku berkurang $success_count',icon: 'success',confirmButtonText: 'OK'
-      }).then((result) => {
-          if (result.value) {
-              window.location = 'index.php?page=data_sirkul';
-          }
-      })</script>";
-      } else if ($success_count > 0) {
-      echo "<script>
-      Swal.fire({title: 'Tambah Data Sebagian Berhasil',text: 'Berhasil meminjamkan $success_count dari $jumlah buku',icon: 'warning',confirmButtonText: 'OK'
-      }).then((result) => {
-          if (result.value) {
-              window.location = 'index.php?page=data_sirkul';
-          }
-      })</script>";
-      } else {
-      echo "<script>
-      Swal.fire({title: 'Tambah Data Gagal',text: 'Terjadi kesalahan saat memproses peminjaman',icon: 'error',confirmButtonText: 'OK'
-      }).then((result) => {
-          if (result.value) {
-              window.location = 'index.php?page=add_sirkul';
-          }
-      })</script>";
-    }
+        if ($query_simpan) {
+            echo "<script>
+            Swal.fire({title: 'Tambah Data Berhasil',text: 'Berhasil meminjamkan $jumlah buku. Stok buku berkurang $jumlah',icon: 'success',confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.value) {
+                    window.location = 'index.php?page=data_sirkul';
+                }
+            })</script>";
+        } else {
+            echo "<script>
+            Swal.fire({title: 'Tambah Data Gagal',text: 'Terjadi kesalahan saat memproses peminjaman',icon: 'error',confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.value) {
+                    window.location = 'index.php?page=add_sirkul';
+                }
+            })</script>";
+        }
   }
     
 ?>

@@ -319,39 +319,36 @@ if (isset($_POST['btnPinjam'])) {
                 $kode = 'S000';
             }
             $urut = (int)substr($kode, 1, 3);
+            $tambah = $urut + 1;
+            $id_sk_new = 'S' . str_pad($tambah, 3, '0', STR_PAD_LEFT);
             
-            // Insert multiple records sesuai jumlah
-            $success_count = 0;
-            $error_count = 0;
+            // OPSI 2: 1 SK = 1 Transaksi, berapapun qty
+            // Insert peminjaman sekali saja (Master Transaksi)
+            $sql_sk = "INSERT INTO tb_sirkulasi (id_sk, id_buku, id_anggota, tgl_pinjam, status, tgl_kembali) 
+                       VALUES ('$id_sk_new', '$id_buku', '$id_siswa', '$tgl_pinjam', 'PIN', '$tgl_kembali')";
             
-            for ($i = 0; $i < $jumlah; $i++) {
-                $tambah = $urut + $i + 1;
-                $id_sk_new = 'S' . str_pad($tambah, 3, '0', STR_PAD_LEFT);
-                
-                // Insert peminjaman
-                $sql_insert = "INSERT INTO tb_sirkulasi (id_sk, id_buku, id_anggota, tgl_pinjam, status, tgl_kembali) 
-                               VALUES ('$id_sk_new', '$id_buku', '$id_siswa', '$tgl_pinjam', 'PIN', '$tgl_kembali')";
-                
-                // Log peminjaman
-                $sql_log = "INSERT INTO log_pinjam (id_buku, id_anggota, tgl_pinjam) 
-                            VALUES ('$id_buku', '$id_siswa', '$tgl_pinjam')";
-                
-                if ($koneksi->query($sql_insert) && $koneksi->query($sql_log)) {
-                    $success_count++;
-                } else {
-                    $error_count++;
-                }
-            }
+            // Insert detail buku dengan quantity
+            $sql_detail = "INSERT INTO tb_sirkulasi_detail (id_sk, id_buku, jumlah, status) 
+                          VALUES ('$id_sk_new', '$id_buku', $jumlah, 'PIN')";
             
-            // Decrement stok sebanyak jumlah yang berhasil dipinjam
-            if ($success_count > 0) {
-                $koneksi->query("UPDATE tb_buku SET stok = stok - $success_count WHERE id_buku='$id_buku'");
+            // Log peminjaman
+            $sql_log = "INSERT INTO log_pinjam (id_buku, id_anggota, tgl_pinjam) 
+                        VALUES ('$id_buku', '$id_siswa', '$tgl_pinjam')";
+            
+            // Log aktivitas peminjaman ke tb_kunjungan
+            $nama_siswa = $_SESSION["ses_nama"];
+            $sql_aktivitas = "INSERT INTO tb_kunjungan (id_anggota, nama, level, tgl_kunjungan, waktu_kunjungan, jenis_aktivitas, id_buku, id_sk, keterangan) 
+                             VALUES ('$id_siswa', '$nama_siswa', 'Siswa', DATE(NOW()), TIME(NOW()), 'Peminjaman', '$id_buku', '$id_sk_new', 'Self-service $jumlah buku(s)')";
+            
+            // Execute semua query
+            if ($koneksi->query($sql_sk) && $koneksi->query($sql_detail) && $koneksi->query($sql_log) && $koneksi->query($sql_aktivitas)) {
+                // Decrement stok sebanyak jumlah yang dipinjam
+                $koneksi->query("UPDATE tb_buku SET stok = stok - $jumlah WHERE id_buku='$id_buku'");
                 
-                if ($success_count == $jumlah) {
-                    echo "<script>
-                        Swal.fire({
-                            title: 'Peminjaman Berhasil!',
-                            text: 'Berhasil meminjam " . $jumlah . " buku. Tanggal pengembalian: $tgl_kembali',
+                echo "<script>
+                    Swal.fire({
+                        title: 'Peminjaman Berhasil!',
+                        text: 'Berhasil meminjam $jumlah buku. Tanggal pengembalian: $tgl_kembali',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then((result) => {
@@ -360,20 +357,6 @@ if (isset($_POST['btnPinjam'])) {
                             }
                         });
                     </script>";
-                } else {
-                    echo "<script>
-                        Swal.fire({
-                            title: 'Peminjaman Sebagian Berhasil',
-                            text: 'Berhasil meminjam " . $success_count . " dari " . $jumlah . " buku yang diinginkan',
-                            icon: 'warning',
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            if (result.value) {
-                                window.location = '?page=siswa/riwayat_pinjam_siswa';
-                            }
-                        });
-                    </script>";
-                }
             } else {
                 echo "<script>
                     Swal.fire({
