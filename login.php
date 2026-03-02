@@ -264,13 +264,18 @@ if (isset($_POST['btnLogin'])) {
 					   <span class="fa fa-eye form-control-feedback" id="showHidePassword" style="pointer-events:auto; right:12px;"></span>
 				   </div>
 				<div class="row">
-	<div class="col-xs-12">
+	<div class="col-xs-6">
 		<button type="submit" 
 		        class="btn btn-primary btn-block btn-flat" 
 		        name="btnLogin" 
 		        title="Masuk Sistem">
 			<b>Masuk</b>
 		</button>
+	</div>
+	<div class="col-xs-6">
+		<a href="register.php" class="btn btn-block btn-flat" style="background: #ffffff; color: #0051b3; border: 2px solid #ffffff; font-weight: 700; border-radius: 8px; height: 44px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+			<b>Daftar</b>
+		</a>
 	</div>
 </div>
 

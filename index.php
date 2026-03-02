@@ -27,7 +27,7 @@ include "inc/koneksi.php";
 $school_name = "Perpus Pelita"; // change to your school name
 $school_logo_path = "dist/img/logo.png";
 if (!file_exists($school_logo_path)) {
-	$school_logo_path = "dist/img/logo.png"; // fallback
+	$school_logo_path = "dist/img/logo.png"; 
 }
 ?>
 
