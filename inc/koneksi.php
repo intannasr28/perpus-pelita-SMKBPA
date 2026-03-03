@@ -1,8 +1,8 @@
 <?php
 // Mengambil data dari Variables di Railway
-$host     = getenv('MYSQLHOST') ?: 'localhost'; 
+$host     = getenv('MYSQLHOST') ?: 'mysql.railway.internal'; 
 $user     = getenv('MYSQLUSER') ?: 'root';
-$password = getenv('MYSQLPASSWORD') ?: ''; 
+$password = getenv('MYSQLPASSWORD') ?: 'jsmGMvjLtEpQYXgbqQMVKcWvTQSZwEnA'; 
 $database = getenv('MYSQLDATABASE') ?: 'railway'; 
 $port     = intval(getenv('MYSQLPORT') ?: 3306);
 
