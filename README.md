@@ -298,6 +298,7 @@ mysql -u root -p perpuspelita < backup_perpus_20260302.sql
 ## 📞 Support & Contact
 
 Untuk pertanyaan atau bug report, hubungi admin perpustakaan atau developer.
+- email dev: intannasr78@gmail.com
 
 ---
 
