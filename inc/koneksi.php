@@ -5,10 +5,10 @@
 // =====================================================
 
 // Get database config from environment variables (Railway) or use defaults (Local)
-$host = getenv('DB_HOST') ?: 'localhost';
+$host = getenv('DB_HOST') ?: 'mysql.railway.internal';
 $user = getenv('DB_USER') ?: 'root';
-$password = getenv('DB_PASSWORD') ?: '';
-$database = getenv('DB_NAME') ?: 'data_perpus';
+$password = getenv('DB_PASSWORD') ?: 'jsmGMvjLtEpQYXgbqQMVKcWvTQSZwEnA';
+$database = getenv('DB_NAME') ?: 'railway';
 $port = intval(getenv('DB_PORT') ?: 3306);
 
 // Connection
