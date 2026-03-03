@@ -1,17 +1,1 @@
-{
-    "name": "perpuspelita/project",
-    "description": "Perpustakaan Pelita web application",
-    "type": "project",
-    "require": {
-        "php": ">=7.4"
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
-        }
-    },
-    "scripts": {
-        "post-install-cmd": "echo 'Composer install complete.'",
-        "post-update-cmd": "echo 'Composer update complete.'"
-    }
-}
+{}
