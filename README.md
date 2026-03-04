@@ -94,7 +94,7 @@ Aplikasi Manajemen Perpustakaan Berbasis Website dengan fitur lengkap untuk pemi
 ### Step 1: Clone/Download Aplikasi
 ```bash
 # Download dari repository
-git clone <repository-url>
+git clone https://github.com/intannasr28/perpus-pelita-SMKBPA.git
 cd perpuspelita
 ```
 
@@ -131,8 +131,8 @@ chmod 777 assets_style/assets/images/buku
 ```
 URL: http://localhost/perpuspelita
 Login: 
-- Username: admin (default)
-- Password: admin123 (sesuaikan di database)
+- Username: intannasr
+- Password: 123 
 ```
 
 ---
