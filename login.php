@@ -89,9 +89,9 @@ if (isset($_POST['btnLogin'])) {
 			background-size: cover;
 			background-attachment: fixed;
 			min-height: 100vh;
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			display: flex !important;
+			align-items: center !important;
+			justify-content: center !important;
 			font-family: 'Poppins', sans-serif;
 			position: relative;
 		}
@@ -109,7 +109,7 @@ if (isset($_POST['btnLogin'])) {
 
 		.login-box {
 			width: 360px;
-			margin: auto;
+			margin: 0 auto;
 			position: relative;
 			z-index: 1;
 		}
@@ -134,16 +134,34 @@ if (isset($_POST['btnLogin'])) {
 			   backdrop-filter: blur(10px);
 			   position: relative;
 			   overflow: hidden;
+			   text-align: center;
 		   }
 		   .login-box-body::before {
 			   display: none;
 		   }
+
+		.login-box-body {
+			text-align: center;
+		}
 
 		.login-box-body .login-box-msg {
 			font-size: 18px;
 			font-weight: 600;
 			color: #001f3f;
 			margin-bottom: 25px;
+		}
+
+		.login-box-body .row {
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+			display: flex !important;
+			gap: 10px;
+		}
+
+		.login-box-body .row > [class*="col-"] {
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+			flex: 1;
 		}
 
 		.form-control {
@@ -281,14 +299,6 @@ if (isset($_POST['btnLogin'])) {
 
 <br>
 
-<div class="text-center register-container">
-	<p>
-		Belum punya akun?
-		<a href="register.php" class="register-link">
-			Daftar di sini
-		</a>
-	</p>
-</div>
 			</form>
 			<!-- /.social-auth-links -->
 		</div>
