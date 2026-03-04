@@ -31,13 +31,20 @@
     tb_sirkulasi.id_sk,
     tb_sirkulasi.tgl_pinjam,
     tb_sirkulasi.tgl_kembali,
-        IF(DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))<=0, 0, DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))) AS telat_pengembalian 
+    tb_sirkulasi.status,
+        IF(tb_sirkulasi.status='KEM',
+          IF(DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))<=0, 0, DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))),
+          IF(DATEDIFF(CURDATE(), DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))<=0, 0, DATEDIFF(CURDATE(), DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY)))
+          ) AS telat_pengembalian 
         FROM tb_sirkulasi 
         JOIN tb_anggota ON tb_anggota.id_anggota=tb_sirkulasi.id_anggota 
-        JOIN tb_buku ON tb_buku.id_buku=tb_sirkulasi.id_buku where tb_sirkulasi.status='KEM'
-        Order By id_anggota");
-    $no=null;
-    $total_denda=null;
+        JOIN tb_buku ON tb_buku.id_buku=tb_sirkulasi.id_buku WHERE (
+        (tb_sirkulasi.status='KEM' AND DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY)) > 0)
+        OR (tb_sirkulasi.status='PIN' AND CURDATE() > DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))
+        )
+        Order By tb_sirkulasi.tgl_pinjam DESC");
+    $no=0;
+    $total_denda=0;
     $tarif_denda=1000;
     ?>
     <table class="table table-striped table-bordered">
@@ -61,23 +68,25 @@
             while ($data = mysqli_fetch_array($sql,MYSQLI_ASSOC)) { // Ambil semua data dari hasil eksekusi $sql
                 $no++;
                 $total_denda=$total_denda+($data['telat_pengembalian']*$tarif_denda);
+                // Jika belum dikembalikan, gunakan jatuh tempo (tgl_pinjam + 7 hari)
+                $tgl_jatuh_tempo = $data['status'] == 'PIN' ? date('d/M/Y', strtotime($data['tgl_pinjam'] . ' +7 days')) : date_format(new DateTime($data['tgl_kembali']),'d/M/Y');
                 echo '<tr>
-						<td>'.$no.'</td>
-						<td>'.$data['id_sk'].'</td>
-						<td>'.$data['judul_buku'].'</td>
-						<td>'.$data['nama'].'</td>
-						<td>'.date_format(new DateTime($data['tgl_pinjam']),'d/M/Y').'</td>
-                        <td>'.date_format(new DateTime($data['tgl_kembali']),'d/M/Y').'</td>
-						<td>Rp. '.number_format($data['telat_pengembalian']*$tarif_denda,0,',','.').'</td>
-						</tr>';
+					<td>'.$no.'</td>
+					<td>'.$data['id_sk'].'</td>
+					<td>'.$data['judul_buku'].'</td>
+					<td>'.$data['nama'].'</td>
+					<td>'.date_format(new DateTime($data['tgl_pinjam']),'d/M/Y').'</td>
+                    <td>'.$tgl_jatuh_tempo.'</td>
+					<td>Rp. '.number_format($data['telat_pengembalian']*$tarif_denda,0,',','.').'</td>
+					</tr>';
             }
         } else { // Jika data tidak ada
-            echo "<tr><td colspan='5'>Data tidak ada</td></tr>";
+            echo "<tr><td colspan='7'>Data tidak ada</td></tr>";
         }
         ?>
             <tr>
                     <th colspan="7" style="text-align:right; padding-right:1.5cm;">
-					    Total Denda Rp. <?php echo number_format($total_denda,0,',','.');?>
+					    Total Denda Rp. <?php echo number_format($total_denda ?? 0,0,',','.');?>
 					</th>
             </tr>
     </table>

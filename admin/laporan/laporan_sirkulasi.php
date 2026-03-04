@@ -162,31 +162,35 @@
 
 				<?php
 			// Build WHERE clause based on filter
-			$where_clause = "WHERE tb_sirkulasi.status='KEM'";
+			// Menampilkan: Buku yang sudah dikembalikan terlambat OR buku yang belum dikembalikan tapi sudah lewat jatuh tempo
+			$where_clause = "WHERE (
+				(tb_sirkulasi.status='KEM' AND DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY)) > 0)
+				OR (tb_sirkulasi.status='PIN' AND CURDATE() > DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))
+			)";
 			$tipe_filter = isset($_POST['tipe_filter']) ? $_POST['tipe_filter'] : '';
 
 			if ($tipe_filter == 'bulan') {
 				$bulan = isset($_POST['filter_bulan']) ? $_POST['filter_bulan'] : '';
 				$tahun = isset($_POST['filter_tahun']) ? $_POST['filter_tahun'] : '';
 				if ($bulan && $tahun) {
-					$where_clause .= " AND MONTH(tb_sirkulasi.tgl_kembali) = '$bulan' AND YEAR(tb_sirkulasi.tgl_kembali) = '$tahun'";
+					$where_clause .= " AND MONTH(tb_sirkulasi.tgl_pinjam) = '$bulan' AND YEAR(tb_sirkulasi.tgl_pinjam) = '$tahun'";
 				}
 			} elseif ($tipe_filter == 'pekan') {
 				$pekan = isset($_POST['filter_pekan']) ? $_POST['filter_pekan'] : '';
 				$tahun = isset($_POST['filter_tahun']) ? $_POST['filter_tahun'] : '';
 				if ($pekan && $tahun) {
-					$where_clause .= " AND WEEK(tb_sirkulasi.tgl_kembali) = '$pekan' AND YEAR(tb_sirkulasi.tgl_kembali) = '$tahun'";
+					$where_clause .= " AND WEEK(tb_sirkulasi.tgl_pinjam) = '$pekan' AND YEAR(tb_sirkulasi.tgl_pinjam) = '$tahun'";
 				}
 			} elseif ($tipe_filter == 'tahun') {
 				$tahun = isset($_POST['filter_tahun']) ? $_POST['filter_tahun'] : '';
 				if ($tahun) {
-					$where_clause .= " AND YEAR(tb_sirkulasi.tgl_kembali) = '$tahun'";
+					$where_clause .= " AND YEAR(tb_sirkulasi.tgl_pinjam) = '$tahun'";
 				}
 			} elseif ($tipe_filter == 'range') {
 				$dari = isset($_POST['filter_dari']) ? $_POST['filter_dari'] : '';
 				$sampai = isset($_POST['filter_sampai']) ? $_POST['filter_sampai'] : '';
 				if ($dari && $sampai) {
-					$where_clause .= " AND tb_sirkulasi.tgl_kembali >= '$dari' AND tb_sirkulasi.tgl_kembali <= '$sampai'";
+					$where_clause .= " AND tb_sirkulasi.tgl_pinjam >= '$dari' AND tb_sirkulasi.tgl_pinjam <= '$sampai'";
 				}
 			}
 
@@ -197,11 +201,15 @@
 			tb_sirkulasi.id_sk,
 			tb_sirkulasi.tgl_pinjam,
 			tb_sirkulasi.tgl_kembali,
-                  	IF(DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))<=0, 0, DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))) AS telat_pengembalian 
+			tb_sirkulasi.status,
+                  	IF(tb_sirkulasi.status='KEM',
+			  	IF(DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))<=0, 0, DATEDIFF(tb_sirkulasi.tgl_kembali, DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))),
+			  	IF(DATEDIFF(CURDATE(), DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY))<=0, 0, DATEDIFF(CURDATE(), DATE_ADD(tb_sirkulasi.tgl_pinjam, INTERVAL 7 DAY)))
+			  	) AS telat_pengembalian 
 			FROM tb_sirkulasi 
 			JOIN tb_anggota ON tb_anggota.id_anggota=tb_sirkulasi.id_anggota 
 			JOIN tb_buku ON tb_buku.id_buku=tb_sirkulasi.id_buku $where_clause
-			Order By tb_sirkulasi.tgl_kembali DESC");
+			Order By tb_sirkulasi.tgl_pinjam DESC");
 
 			$no = 0;
 			$total_denda = 0;
@@ -209,6 +217,10 @@
             while ($data = mysqli_fetch_array($sql, MYSQLI_ASSOC)) {
 					$no++;
 					$total_denda=$total_denda+($data['telat_pengembalian']*$tarif_denda);
+					// Jika belum dikembalikan, gunakan jatuh tempo (tgl_pinjam + 7 hari)
+					$tgl_jatuh_tempo = $data['status'] == 'PIN' ? date('d/M/Y', strtotime($data['tgl_pinjam'] . ' +7 days')) : date_format(new DateTime($data['tgl_kembali']),'d/M/Y');
+					$status_badge = $data['status'] == 'PIN' ? '<span class="label label-warning">BELUM DIKEMBALIKAN</span>' : '<span class="label label-success">DIKEMBALIKAN TERLAMBAT</span>';
+					
 					echo '<tr>
 						<td>'.$no.'</td>
 						<td>'.$data['id_sk'].'</td>
@@ -216,7 +228,7 @@
 				
 						<td>'.$data['nama'].'</td>
 						<td>'.date_format(new DateTime($data['tgl_pinjam']),'d/M/Y').'</td>
-						<td>'.date_format(new DateTime($data['tgl_kembali']),'d/M/Y').'</td>
+						<td>'.$tgl_jatuh_tempo.' '.$status_badge.'</td>
 						<td>Rp. '.number_format($data['telat_pengembalian']*$tarif_denda,0,',','.').'</td>
 						</tr>';
 				}

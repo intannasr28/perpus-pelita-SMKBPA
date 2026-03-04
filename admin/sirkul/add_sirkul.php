@@ -3,7 +3,7 @@
   
 $carikode = mysqli_query($koneksi,"SELECT id_sk FROM tb_sirkulasi order by id_sk desc");
 $datakode = mysqli_fetch_array($carikode);
-$kode = $datakode['id_sk'];
+$kode = ($datakode && isset($datakode['id_sk'])) ? $datakode['id_sk'] : 'S000';
 $urut = substr($kode, 1, 3);
 $tambah = (int) $urut + 1;
 
