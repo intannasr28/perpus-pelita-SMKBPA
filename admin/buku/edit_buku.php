@@ -9,7 +9,7 @@
 
 <section class="content-header">
 	<h1>
-		Master Data-Buku
+		Master Data Buku
 		
 	</h1>
 	<ol class="breadcrumb">

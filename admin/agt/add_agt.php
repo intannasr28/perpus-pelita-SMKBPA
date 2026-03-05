@@ -18,7 +18,7 @@ if (strlen($tambah) == 1){
 
 <section class="content-header">
 	<h1>
-		Master Data-Anggota
+		Master Data Anggota
 	</h1>
 	<ol class="breadcrumb">
 		<li>

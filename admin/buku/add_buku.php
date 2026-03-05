@@ -1,9 +1,8 @@
 <?php
-//kode 9 digit
   
 $carikode = mysqli_query($koneksi,"SELECT id_buku FROM tb_buku order by id_buku desc");
 $datakode = mysqli_fetch_array($carikode);
-$kode = $datakode['id_buku'];
+$kode = ($datakode && isset($datakode['id_buku'])) ? $datakode['id_buku'] : 'B000';
 $urut = substr($kode, 1, 3);
 $tambah = (int) $urut + 1;
 
@@ -47,9 +46,9 @@ if (strlen($tambah) == 1){
 
 						<div class="form-group">
 							<label>Judul Buku</label>
-							<input type="text" name="judul_buku" id="judul_buku" class="form-control" placeholder="Judul Buku">
-						</div>
-
+						<input type="text" name="judul_buku" id="judul_buku" class="form-control" placeholder="Judul Buku" maxlength="30" required>
+						<small class="form-text text-muted">Maksimal 40 karakter</small>
+					</div>
 						<div class="form-group">
 							<label>Pengarang</label>
 							<input type="text" name="pengarang" id="pengarang" class="form-control" placeholder="Nama Pengarang">
@@ -98,11 +97,29 @@ if (strlen($tambah) == 1){
 <?php
 
 	if (isset ($_POST['Simpan'])){
+		// Sanitasi dan validasi input
+		$judul_buku = substr($_POST['judul_buku'], 0, 60);
+		$pengarang = substr($_POST['pengarang'], 0, 100);
+		$penerbit = substr($_POST['penerbit'], 0, 100);
+		
+		// Validasi judul buku tidak boleh kosong
+		if (empty(trim($judul_buku))) {
+			echo "<script>
+			Swal.fire({title: 'Validasi Gagal',text: 'Judul Buku tidak boleh kosong',icon: 'warning',confirmButtonText: 'OK'
+			}).then((result) => {
+				if (result.value) {
+					window.location = 'index.php?page=MyApp/add_buku';
+				}
+			})</script>";
+			mysqli_close($koneksi);
+			exit;
+		}
+		
 		$sql_simpan = "INSERT INTO tb_buku (id_buku,judul_buku,pengarang,penerbit,th_terbit,stok,kategori) VALUES (
 		   '".$_POST['id_buku']."',
-		  '".$_POST['judul_buku']."',
-		  '".$_POST['pengarang']."',
-		  '".$_POST['penerbit']."',
+		  '".mysqli_real_escape_string($koneksi, $judul_buku)."',
+		  '".mysqli_real_escape_string($koneksi, $pengarang)."',
+		  '".mysqli_real_escape_string($koneksi, $penerbit)."',
 		  '".$_POST['th_terbit']."',
 		  '".$_POST['stok']."',
 		  '".$_POST['kategori']."')";
