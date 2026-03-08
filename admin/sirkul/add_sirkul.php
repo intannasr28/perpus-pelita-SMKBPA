@@ -1,4 +1,7 @@
 <?php
+// Include helper functions untuk denda
+require_once __DIR__ . '/../../inc/helper_denda.php';
+
 //kode 9 digit
   
 $carikode = mysqli_query($koneksi,"SELECT id_sk FROM tb_sirkulasi order by id_sk desc");
@@ -54,25 +57,24 @@ if (strlen($tambah) == 1){
 
 						<div class="form-group">
 							<label>Nama Peminjam</label>
-							<select name="id_anggota" id="id_anggota" class="form-control select2" style="width: 100%;">
-								<option selected="selected">-- Pilih --</option>
-								<?php
-								// ambil data dari database
-								$query = "select * from tb_anggota";
-								$hasil = mysqli_query($koneksi, $query);
-								while ($row = mysqli_fetch_array($hasil)) {
-								?>
-								<option value="<?php echo $row['id_anggota'] ?>">
-									<?php echo $row['id_anggota'] ?>
-									-
-									<?php echo $row['nama'] ?>
-								</option>
-								<?php
-								}
-								?>
-							</select>
-						</div>
-
+						<select name="id_anggota" id="id_anggota" class="form-control select2" style="width: 100%;" onchange="checkStatusSiswa()">
+							<option selected="selected">-- Pilih --</option>
+							<?php
+							// ambil data dari database dengan status
+							$query = "select id_anggota, nama, status from tb_anggota ORDER BY nama ASC";
+							$hasil = mysqli_query($koneksi, $query);
+							while ($row = mysqli_fetch_array($hasil)) {
+								$status_badge = $row['status'] == 'NONAKTIF' ? ' [NONAKTIF]' : '';
+							?>
+							<option value="<?php echo $row['id_anggota'] ?>" data-status="<?php echo $row['status'] ?>">
+								<?php echo $row['id_anggota'] ?> - <?php echo $row['nama'] . $status_badge ?>
+							</option>
+							<?php
+							}
+							?>
+						</select>
+						<div id="status_info" style="margin-top: 10px;"></div>
+						<div id="denda_info" style="margin-top: 10px;"></div>
 						<div class="form-group">
 							<label>Buku <span class="text-danger">*</span></label>
 							<select name="id_buku" id="id_buku" class="form-control select2" style="width: 100%;" required onchange="checkStok()">
@@ -109,6 +111,8 @@ if (strlen($tambah) == 1){
 
 					</div>
 					<!-- /.box-body -->
+					<!-- Info Peringatan Denda -->
+					<div id="warning_box" style="display: none; margin-bottom: 20px;"></div>
 
 					<div class="box-footer">
 						<input type="submit" name="Simpan" value="Simpan" class="btn btn-info">
@@ -123,8 +127,40 @@ if (strlen($tambah) == 1){
 
     if (isset ($_POST['Simpan'])){
 
-		//menangkap post tgl pinjam
-		$tgl_p=$_POST['tgl_pinjam'];
+			$id_anggota = $_POST['id_anggota'];
+			
+			// Definisikan variabel tanggal pinjam (gunakan hari ini jika tidak diisi)
+			$tgl_p = !empty($_POST['tgl_pinjam']) ? $_POST['tgl_pinjam'] : date('Y-m-d');
+			
+			// VALIDASI 1: Cek status akun siswa
+			$status_siswa = cekStatusSiswa($id_anggota, $koneksi);
+			if ($status_siswa['status'] == 'NONAKTIF') {
+				echo "<script>
+				Swal.fire({title: 'Peminjaman Ditolak', text: 'Akun siswa sedang NONAKTIF.\n\nAlasan: " . $status_siswa['alasan'] . "\n\nSilahkan hubungi admin untuk mengaktifkan kembali akun.',icon: 'error',confirmButtonText: 'OK'
+				}).then((result) => {
+					if (result.value) {
+						window.location = 'index.php?page=add_sirkul';
+					}
+				})</script>";
+				mysqli_close($koneksi);
+				exit;
+			}
+			
+			// VALIDASI 2: Cek denda terlambat yang belum dibayar
+			$denda_siswa = cekDendaSiswa($id_anggota, $koneksi);
+			if ($denda_siswa['ada_denda']) {
+				$total_denda = $denda_siswa['jumlah_belum_dibayar'];
+				echo "<script>
+				Swal.fire({title: 'Peminjaman Ditolak', text: 'Siswa memiliki denda terlambat yang belum dibayar.\n\nTotal Denda: Rp " . number_format($total_denda, 0, ',', '.') . "\n\nSilahkan bayar denda terlebih dahulu sebelum meminjam buku lagi.',icon: 'error',confirmButtonText: 'OK'
+				}).then((result) => {
+					if (result.value) {
+						window.location = 'index.php?page=add_sirkul';
+					}
+				})</script>";
+				mysqli_close($koneksi);
+				exit;
+			}
+
 		//membuat tgl kembali
 		$tgl_k=date('Y-m-d', strtotime('+7 days', strtotime($tgl_p)));
 		$tgl_hk=date('Y-m-d');
@@ -284,4 +320,58 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById('jumlah').addEventListener('input', checkStok);
 	}
 });
+
+// Function untuk cek status siswa dan denda
+function checkStatusSiswa() {
+	var id_anggota = document.getElementById('id_anggota').value;
+	var statusInfo = document.getElementById('status_info');
+	var dendaInfo = document.getElementById('denda_info');
+	var warningBox = document.getElementById('warning_box');
+	
+	if (!id_anggota || id_anggota === '-- Pilih --') {
+		statusInfo.innerHTML = '';
+		dendaInfo.innerHTML = '';
+		warningBox.style.display = 'none';
+		return;
+	}
+	
+	// Fetch status siswa dan denda via AJAX
+	fetch('../../plugins/check_siswa.php', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+		body: 'id_anggota=' + encodeURIComponent(id_anggota)
+	})
+	.then(response => response.json())
+	.then(data => {
+		// Display status
+		if (data.status === 'NONAKTIF') {
+			statusInfo.innerHTML = '<div class="alert alert-danger"><i class="fa fa-ban"></i> <strong>AKUN NONAKTIF</strong><br>Alasan: ' + data.alasan + '</div>';
+			warningBox.innerHTML = '<div class="alert alert-danger"><strong>⚠️ Peringatan:</strong> Akun siswa ini sedang dinonaktifkan. Tidak dapat melakukan peminjaman.</div>';
+			warningBox.style.display = 'block';
+		} else {
+			statusInfo.innerHTML = '<div class="alert alert-success"><i class="fa fa-check"></i> <strong>AKUN AKTIF</strong></div>';
+		}
+		
+		// Display denda
+		if (data.ada_denda) {
+			dendaInfo.innerHTML = '<div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> <strong>DENDA TERLAMBAT BELUM DIBAYAR</strong><br>' +
+				'Buku terlambat: ' + data.jumlah_buku_terlambat + ' buku<br>' +
+				'Total Denda: Rp. ' + data.total_denda_format + '<br>' +
+				'<small>Siswa tidak dapat meminjam buku hingga denda dibayar.</small></div>';
+			warningBox.innerHTML = '<div class="alert alert-danger"><strong>⚠️ Peringatan:</strong> Siswa memiliki denda terlambat yang belum dibayar. Akan ditolak saat form disubmit.</div>';
+			warningBox.style.display = 'block';
+		} else {
+			if (data.status === 'AKTIF') {
+				dendaInfo.innerHTML = '<div class="alert alert-success"><i class="fa fa-check"></i> Tidak ada denda yang harus dibayar</div>';
+				warningBox.style.display = 'none';
+			}
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+		statusInfo.innerHTML = '<div class="alert alert-danger">Gagal memuat status siswa</div>';
+	});
+}
 </script>

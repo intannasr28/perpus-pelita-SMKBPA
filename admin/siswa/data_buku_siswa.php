@@ -84,6 +84,9 @@ while ($row = $sql_favorit->fetch_assoc()) {
                                             </span>
                                         </td>
                                         <td>
+                                            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modalSinopsis" onclick="loadSinopsis('<?php echo $buku['id_buku']; ?>', '<?php echo htmlspecialchars($buku['judul_buku']); ?>', '<?php echo htmlspecialchars(isset($buku['sinopsis']) ? $buku['sinopsis'] : ''); ?>')" title="Lihat Sinopsis">
+                                                <i class="fa fa-book"></i> Sinopsis
+                                            </button>
                                             <button type="button" class="btn btn-sm <?php echo $btn_class; ?> toggle-favorit" data-id="<?php echo $buku['id_buku']; ?>" title="<?php echo $btn_text; ?> dari Favorit">
                                                 <i class="fa <?php echo $icon_class; ?>"></i> <?php echo $btn_text; ?>
                                             </button>
@@ -98,5 +101,44 @@ while ($row = $sql_favorit->fetch_assoc()) {
         </div>
     </div>
 </section>
+
+<!-- Modal Sinopsis -->
+<div class="modal fade" id="modalSinopsis" tabindex="-1" role="dialog" aria-labelledby="sinopsisLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sinopsisLabel">Sinopsis Buku</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label><strong>Judul Buku:</strong></label>
+          <p id="judul-sinopsis"></p>
+        </div>
+        <div class="form-group">
+          <label><strong>Sinopsis:</strong></label>
+          <p id="isi-sinopsis" style="line-height: 1.6; white-space: pre-wrap; word-wrap: break-word;"></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function loadSinopsis(idBuku, judulBuku, sinopsis) {
+  // Decode HTML entities
+  var judulDecoded = $('<div/>').html(judulBuku).text();
+  var sinopsisDecoded = $('<div/>').html(sinopsis).text();
+  
+  // Set modal content
+  document.getElementById('judul-sinopsis').textContent = judulDecoded || '(Tidak ada judul)';
+  document.getElementById('isi-sinopsis').textContent = sinopsisDecoded || '(Belum ada sinopsis untuk buku ini)';
+}
+</script>
 
 <!-- Toggle Favorit Script dipindahkan ke assets/js/toggle-favorit.js dan di-load di index.php footer -->

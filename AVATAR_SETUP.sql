@@ -1,0 +1,47 @@
+-- =====================================================
+-- Avatar Setup for Dynamic Gender-based Display
+-- =====================================================
+-- 
+-- Panduan untuk menambahkan avatar berdasarkan jenis kelamin:
+--
+-- STRUKTUR FILE AVATAR:
+-- 1. Avatar Perempuan: dist/img/avatar_perempuan.png
+-- 2. Avatar Laki-laki: dist/img/avatar_laki_laki.png (underscore)
+--
+-- PETUNJUK SETUP:
+--
+-- 1. RENAME FILE AVATAR YANG ADA:
+--    - Gambar animasi berhijab (perempuan) yang sudah ada di dist/img/avatar.png
+--    - Rename menjadi: avatar_perempuan.png
+--
+-- 2. TAMBAHKAN AVATAR LAKI-LAKI:
+--    - Siapkan gambar animasi laki-laki berukuran persegi (misal 150x150px atau lebih)
+--    - Upload ke: dist/img/avatar_laki_laki.png
+--    - Format: PNG dengan transparan background (opsional)
+--
+-- CARA IMPLEMENTASI DI SYSTEM:
+--
+-- A. Jika menggunakan Command Line (Windows):
+--    cd c:\laragon\www\perpuspelita\dist\img\
+--    ren avatar.png avatar_perempuan.png
+--
+-- B. Jika menggunakan File Manager:
+--    1. Buka folder: c:\laragon\www\perpuspelita\dist\img\
+--    2. Klik kanan pada avatar.png -> Rename
+--    3. Ubah nama menjadi: avatar_perempuan.png
+--    4. Copy file avatar_perempuan.png, beri nama avatar_laki_laki.png sebagai placeholder
+--
+-- C. Untuk gambar avatar laki-laki:
+--    - Cari/download gambar animasi laki-laki format PNG
+--    - Sesuaikan ukuran dengan avatar perempuan (misal 150x150 atau 200x200)
+--    - Simpan sebagai: dist/img/avatar_laki_laki.png
+--
+-- TESTING:
+--    Cek di profile siswa atau dashboard - avatar akan otomatis berubah sesuai jenis kelamin
+--
+-- NOTES:
+--    - Jika salah satu file avatar tidak ditemukan, sistem akan fallback ke avatar.png
+--    - Pastikan file PNG memiliki transparent background untuk hasil terbaik
+--    - Ukuran file sebaiknya small (< 50KB) untuk performa optimal
+--
+-- =====================================================

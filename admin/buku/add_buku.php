@@ -81,7 +81,11 @@ if (strlen($tambah) == 1){
 								<option value="Lainnya">Lainnya</option>
 							</select>
 						</div>
-
+					<div class="form-group">
+						<label>Sinopsis / Deskripsi Buku</label>
+						<textarea name="sinopsis" id="sinopsis" class="form-control" rows="5" placeholder="Masukkan sinopsis atau deskripsi singkat tentang isi buku..."></textarea>
+						<small class="form-text text-muted">Opsional - Akan ditampilkan untuk membantu pengguna memilih buku</small>
+					</div>
 					</div>
 					<!-- /.box-body -->
 
@@ -101,6 +105,7 @@ if (strlen($tambah) == 1){
 		$judul_buku = substr($_POST['judul_buku'], 0, 60);
 		$pengarang = substr($_POST['pengarang'], 0, 100);
 		$penerbit = substr($_POST['penerbit'], 0, 100);
+		$sinopsis = isset($_POST['sinopsis']) ? $_POST['sinopsis'] : '';
 		
 		// Validasi judul buku tidak boleh kosong
 		if (empty(trim($judul_buku))) {
@@ -115,14 +120,15 @@ if (strlen($tambah) == 1){
 			exit;
 		}
 		
-		$sql_simpan = "INSERT INTO tb_buku (id_buku,judul_buku,pengarang,penerbit,th_terbit,stok,kategori) VALUES (
+		$sql_simpan = "INSERT INTO tb_buku (id_buku,judul_buku,pengarang,penerbit,th_terbit,stok,kategori,sinopsis) VALUES (
 		   '".$_POST['id_buku']."',
 		  '".mysqli_real_escape_string($koneksi, $judul_buku)."',
 		  '".mysqli_real_escape_string($koneksi, $pengarang)."',
 		  '".mysqli_real_escape_string($koneksi, $penerbit)."',
 		  '".$_POST['th_terbit']."',
 		  '".$_POST['stok']."',
-		  '".$_POST['kategori']."')";
+		  '".$_POST['kategori']."',
+		  '".mysqli_real_escape_string($koneksi, $sinopsis)."')";
 		$query_simpan = mysqli_query($koneksi, $sql_simpan);
 		mysqli_close($koneksi);
 

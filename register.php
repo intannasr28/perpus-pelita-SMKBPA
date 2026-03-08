@@ -44,7 +44,7 @@ if (strlen($tambah) == 1) {
 
     <style>
         body.register-page {
-            background: url('dist/img/background.jpeg') no-repeat center center fixed;
+            background: url('dist/img/background.png') no-repeat center center fixed;
             background-size: cover;
             background-attachment: fixed;
             min-height: 100vh;
@@ -231,7 +231,7 @@ if (strlen($tambah) == 1) {
 
         <div class="register-box-body">
             <center class="register-logo-img">
-                <img src="dist/img/logo.png" width="140px" />
+                <img src="dist/img/logo.jpeg" width="140px" />
             </center>
             <br>
             <p class="login-box-msg">Daftar Akun Siswa</p>

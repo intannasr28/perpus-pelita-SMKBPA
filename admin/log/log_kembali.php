@@ -33,7 +33,7 @@
                   $no = 1;
                   $sql = $koneksi->query("SELECT b.judul_buku, a.id_anggota, a.nama, s.tgl_kembali
                   from tb_sirkulasi s inner join tb_buku b on s.id_buku=b.id_buku
-				  inner join tb_anggota a on s.id_anggota=a.id_anggota where status='KEM' order by tgl_kembali asc");
+				  inner join tb_anggota a on s.id_anggota=a.id_anggota where s.status='KEM' order by tgl_kembali asc");
                   while ($data= $sql->fetch_assoc()) {
                 ?>
 

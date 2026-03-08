@@ -21,8 +21,8 @@ $data_siswa = $sql->fetch_assoc();
                     <h3 class="box-title">Foto Profil</h3>
                 </div>
                 <div class="box-body text-center" style="padding: 20px;">
-                    <img src="dist/img/avatar.png" class="img-circle" alt="User Image" style="width: 150px; height: 150px; border: 3px solid #007bff;">
-                    <p style="margin-top: 15px;"><small>Avatar default</small></p>
+                    <img src="<?php echo getAvatarWithFallback($data_siswa['jekel']); ?>" class="img-circle" alt="User Image" style="width: 150px; height: 150px; border: 3px solid #007bff;">
+                    <p style="margin-top: 15px;"><small><?php echo ucfirst(strtolower($data_siswa['jekel'])); ?></small></p>
                 </div>
             </div>
         </div>

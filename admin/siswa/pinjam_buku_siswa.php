@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../../inc/helper_denda.php';
+
 $id_siswa = $_SESSION["ses_username"];
 $nama_siswa = $_SESSION["ses_nama"];
 
@@ -16,6 +18,11 @@ $format = 'S' . str_pad($tambah, 3, '0', STR_PAD_LEFT);
 
 // Ambil daftar buku dengan stok > 0
 $sql_buku = $koneksi->query("SELECT * FROM tb_buku WHERE stok > 0 ORDER BY judul_buku ASC");
+
+// Cek status akun dan denda siswa untuk ditampilkan di form
+$status_siswa = cekStatusSiswa($id_siswa, $koneksi);
+$denda_siswa = cekDendaSiswa($id_siswa, $koneksi);
+$siswa_bisa_pinjam = ($status_siswa['status'] == 'AKTIF' && !$denda_siswa['ada_denda']);
 ?>
 
 <section class="content-header">
@@ -32,6 +39,29 @@ $sql_buku = $koneksi->query("SELECT * FROM tb_buku WHERE stok > 0 ORDER BY judul
                 <div class="box-header with-border">
                     <h3 class="box-title">Form Peminjaman</h3>
                 </div>
+
+                <?php if ($status_siswa['status'] == 'NONAKTIF'): ?>
+                    <div class="box-body">
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-ban"></i> Akun Anda NONAKTIF</h4>
+                            <p><strong>Alasan:</strong> <?php echo $status_siswa['alasan']; ?></p>
+                            <p>Anda <strong>TIDAK DAPAT</strong> melakukan peminjaman saat ini. Silahkan hubungi admin untuk mengaktifkan kembali akun Anda.</p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($denda_siswa['ada_denda']): ?>
+                    <div class="box-body">
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-money"></i> Denda Terlambat</h4>
+                            <p><strong>Total Denda:</strong> Rp <?php echo number_format($denda_siswa['jumlah_belum_dibayar'], 0, ',', '.'); ?></p>
+                            <p>Anda <strong>TIDAK DAPAT</strong> melakukan peminjaman baru sampai denda ini dibayar.</p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <form method="POST">
                     <div class="box-body">
                         
@@ -107,9 +137,15 @@ $sql_buku = $koneksi->query("SELECT * FROM tb_buku WHERE stok > 0 ORDER BY judul
 
                     </div>
                     <div class="box-footer">
-                        <button type="submit" name="btnPinjam" class="btn btn-primary" id="btnPinjam">
-                            <i class="fa fa-check"></i> Pinjam Buku
-                        </button>
+                        <?php if ($siswa_bisa_pinjam): ?>
+                            <button type="submit" name="btnPinjam" class="btn btn-primary" id="btnPinjam">
+                                <i class="fa fa-check"></i> Pinjam Buku
+                            </button>
+                        <?php else: ?>
+                            <button type="submit" name="btnPinjam" class="btn btn-danger" id="btnPinjam" disabled>
+                                <i class="fa fa-ban"></i> Pinjam Buku (Akun Tidak Aktif)
+                            </button>
+                        <?php endif; ?>
                         <a href="?page=siswa/dashboard_siswa" class="btn btn-secondary">
                             <i class="fa fa-times"></i> Batal
                         </a>
@@ -279,6 +315,25 @@ if (isset($_POST['btnPinjam'])) {
     $jumlah = (int)$_POST['jumlah'];
     $tgl_pinjam = $_POST['tgl_pinjam'];
     $tgl_kembali = date('Y-m-d', strtotime('+7 days', strtotime($tgl_pinjam)));
+
+    // VALIDASI 1: Cek status akun siswa
+    $status_siswa = cekStatusSiswa($id_siswa, $koneksi);
+    if ($status_siswa['status'] == 'NONAKTIF') {
+        echo "<script>
+        Swal.fire({title: 'Peminjaman Ditolak', text: 'Akun Anda sedang NONAKTIF.\n\nAlasan: " . $status_siswa['alasan'] . "\n\nSilahkan hubungi admin untuk mengaktifkan kembali akun Anda atau melakukan pembayaran denda.', icon: 'error', confirmButtonText: 'OK'})
+        </script>";
+        exit;
+    }
+
+    // VALIDASI 2: Cek denda terlambat yang belum dibayar
+    $denda_siswa = cekDendaSiswa($id_siswa, $koneksi);
+    if ($denda_siswa['ada_denda']) {
+        $total_denda = $denda_siswa['jumlah_belum_dibayar'];
+        echo "<script>
+        Swal.fire({title: 'Peminjaman Ditolak', text: 'Anda memiliki denda terlambat yang belum dibayar.\n\nTotal Denda: Rp " . number_format($total_denda, 0, ',', '.') . "\n\nSilahkan bayar denda terlebih dahulu sebelum meminjam buku lagi.', icon: 'error', confirmButtonText: 'OK'})
+        </script>";
+        exit;
+    }
 
     // Validasi jumlah
     if ($jumlah <= 0 || $jumlah > 99) {

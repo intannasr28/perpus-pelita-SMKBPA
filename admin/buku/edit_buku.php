@@ -80,7 +80,11 @@
 							<option value="Lainnya" <?php echo ($data_cek['kategori'] == 'Lainnya') ? 'selected' : ''; ?>>Lainnya</option>
 						</select>
 					</div>
-
+				<div class="form-group">
+					<label>Sinopsis / Deskripsi Buku</label>
+					<textarea name="sinopsis" id="sinopsis" class="form-control" rows="5" placeholder="Masukkan sinopsis atau deskripsi singkat tentang isi buku..."><?php echo isset($data_cek['sinopsis']) ? htmlspecialchars($data_cek['sinopsis']) : ''; ?></textarea>
+					<small class="form-text text-muted">Opsional - Akan ditampilkan untuk membantu pengguna memilih buku</small>
+				</div>
 				</div>
 				<!-- /.box-body -->
 
@@ -97,13 +101,15 @@
 
 if (isset ($_POST['Ubah'])){
 	//mulai proses ubah
+	$sinopsis = isset($_POST['sinopsis']) ? $_POST['sinopsis'] : '';
 	$sql_ubah = "UPDATE tb_buku SET
 		judul_buku='".$_POST['judul_buku']."',
 		pengarang='".$_POST['pengarang']."',
 		penerbit='".$_POST['penerbit']."',
 		th_terbit='".$_POST['th_terbit']."',
 		stok='".$_POST['stok']."',
-		kategori='".$_POST['kategori']."'
+		kategori='".$_POST['kategori']."',
+		sinopsis='".mysqli_real_escape_string($koneksi, $sinopsis)."'
 		WHERE id_buku='".$_POST['id_buku']."'";
 	$query_ubah = mysqli_query($koneksi, $sql_ubah);
 

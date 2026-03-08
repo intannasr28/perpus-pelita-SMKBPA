@@ -1854,3 +1854,68 @@ a.btn:hover {
     margin-left: 5px;
 }
 
+/* ===================================
+    USER PANEL SIDEBAR STYLING
+   =================================== */
+.user-panel {
+    padding: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.user-panel .image {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.user-panel .image img {
+    width: 50px;
+    height: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-panel .info {
+    margin: 0;
+    flex: 1;
+    line-height: 1.3;
+}
+
+.user-panel .info p {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0073b7;
+    font-family: 'Poppins', sans-serif;
+}
+
+.user-panel .info .label {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: capitalize;
+}
+
+.user-panel .info .label-warning {
+    background-color: #FF9800;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-panel .info .label-primary {
+    background-color: #0073b7;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-panel .info .label-success {
+    background-color: #00a65a;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+

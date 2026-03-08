@@ -1,0 +1,236 @@
+<!-- QUICK TROUBLESHOOTING GUIDE -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Avatar & Level - Quick Troubleshooting</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 { color: #333; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+        h2 { color: #667eea; margin-top: 30px; }
+        .step { background: #f8f9fa; padding: 15px; margin: 15px 0; border-left: 4px solid #667eea; border-radius: 5px; }
+        .success { background: #d4edda; border-left-color: #28a745; color: #155724; }
+        .warning { background: #fff3cd; border-left-color: #ffc107; color: #856404; padd"ing: 15px; }
+        .code { background: #f4f4f4; padding: 10px; border-radius: 3px; font-family: monospace; overflow-x: auto; }
+        .btn { display: inline-block; padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 5px; cursor: pointer; border: none; font-size: 14px; }
+        .btn:hover { background: #5568d3; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 3px; }
+        .test-ok { background: #d4edda; color: #155724; }
+        .test-fail { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Avatar & Level - Troubleshooting Guide</h1>
+        
+        <h2>✅ Issues Fixed</h2>
+        <div class="step success">
+            <strong>1. HTML Structure Fixed</strong><br>
+            Removed broken tag <code>&lt;/<b>&gt;</code> yang menyebabkan layout berantakan
+        </div>
+        
+        <div class="step success">
+            <strong>2. Avatar Function Improved</strong><br>
+            Function sekarang support lebih banyak format jekel (case-insensitive, trim spaces, dll)
+        </div>
+        
+        <div class="step success">
+            <strong>3. Fallback Mechanism</strong><br>
+            Jika file avatar tidak ada, sistem automatic fallback ke avatar.png
+        </div>
+        
+        <h2>🔧 Testing & Verification</h2>
+        
+        <div class="step warning">
+            <strong>Step 1: Check Avatar Files</strong><br><br>
+            Akses tool berikut untuk lihat status file avatar:<br>
+            <a href="check-avatars.php" class="btn" target="_blank">→ Check Avatar Files</a><br><br>
+            <small>Ini akan show:</small>
+            <ul>
+                <li>Status file avatar_perempuan.png</li>
+                <li>Status file avatar_laki_laki.png</li>
+                <li>Preview kedua gambar</li>
+                <li>Apakah files identical (duplikat)</li>
+            </ul>
+        </div>
+        
+        <div class="step warning">
+            <strong>Step 2: Debug User Account</strong><br><br>
+            Akses script debug untuk cek jekel data user yang sedang login:<br>
+            <a href="debug-avatar.php" class="btn" target="_blank">→ Debug Avatar System</a><br><br>
+            <small>Ini will show:</small>
+            <ul>
+                <li>Nilai jekel dari database</li>
+                <li>Format & length string</li>
+                <li>Avatar yang dipilih</li>
+                <li>Possible issues & recommendations</li>
+            </ul>
+        </div>
+        
+        <h2>⚠️ Common Issues & Solutions</h2>
+        
+        <h3>Issue 1: Avatar Masih Muncul Perempuan Padahal Laki-laki</h3>
+        <div class="step">
+            <strong>Penyebab Kemungkinan:</strong>
+            <ul>
+                <li>File avatar_laki_laki.png adalah duplikat (isinya sama dengan perempuan)</li>
+                <li>Data jekel di database kosong atau format tidak standard</li>
+                <li>Cache browser</li>
+            </ul>
+            
+            <strong>Solusi:</strong><br>
+            1️⃣ Buka <a href="check-avatars.php" target="_blank">check-avatars.php</a><br>
+            2️⃣ Jika "DUPLIKAT TERDETEKSI" → Ganti file avatar_laki_laki.png<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- Download avatar laki-laki dari dicebear.com<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- Rename: avatar_laki_laki.png<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- Upload ke: dist/img/<br>
+            3️⃣ Buka <a href="debug-avatar.php" target="_blank">debug-avatar.php</a><br>
+            4️⃣ Jika jekel kosong → Edit profile siswa, set jenis kelamin<br>
+            5️⃣ Clear cache: Ctrl+Shift+Delete → All time → Clear<br>
+            6️⃣ Refresh: Ctrl+F5
+        </div>
+        
+        <h3>Issue 2: Level Pengguna Tidak Terlihat</h3>
+        <div class="step">
+            <strong>Penyebab:</strong> HTML structure yang broken (sudah di-fix)
+            
+            <strong>Solusi:</strong><br>
+            1️⃣ Full refresh browser: Ctrl+Shift+Delete (clear cache)<br>
+            2️⃣ Close browser sepenuhnya<br>
+            3️⃣ Buka ulang dan login kembali<br>
+            4️⃣ Check sidebar - sekarang level harus terlihat ✓
+        </div>
+        
+        <h2>🧪 Testing Manual</h2>
+        
+        <div class="step">
+            <strong>Test 1: Check Sidebar Avatar & Level</strong>
+            <ol>
+                <li>Login sebagai user PEREMPUAN</li>
+                <li>Lihat sidebar sebelah kiri</li>
+                <li>Verify:
+                    <ul class="test-result test-ok">
+                        ✓ Avatar terlihat (gambar perempuan)
+                    </ul>
+                    <ul class="test-result test-ok">
+                        ✓ Nama user terlihat
+                    </ul>
+                    <ul class="test-result test-ok">
+                        ✓ Level terlihat (misal: Siswa, Petugas, Administrator)
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <div class="step">
+            <strong>Test 2: Check Male User</strong>
+            <ol>
+                <li>Logout (atau buka private window)</li>
+                <li>Login sebagai user LAKI-LAKI</li>
+                <li>Verify:
+                    <ul class="test-result test-ok">
+                        ✓ Avatar BERBEDA dari perempuan (harus laki-laki)
+                    </ul>
+                    <ul class="test-result test-ok">
+                        ✓ Nama user terlihat
+                    </ul>
+                    <ul class="test-result test-ok">
+                        ✓ Level terlihat
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <div class="step">
+            <strong>Test 3: Check Profile Page</strong>
+            <ol>
+                <li>Selama login, klik nama user → Profile Siswa</li>
+                <li>Verify:
+                    <ul class="test-result test-ok">
+                        ✓ Avatar di "Foto Profil" sesuai jenis kelamin
+                    </ul>
+                    <ul class="test-result test-ok">
+                        ✓ Jenis kelamin tertulis di bawah avatar
+                    </ul>
+                    <ul class="test-result test-ok">
+                        ✓ Data profil lengkap (ID, Nama, Jenis Kelamin, Kelas, HP)
+                    </ul>
+                    <ul class="test-result test-ok">
+                        ✓ Level terlihat di "Informasi Akun"
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <h2>🎨 Avatar Resources</h2>
+        
+        <div class="step">
+            <strong>Recommended Avatar Generator:</strong><br>
+            🔗 <a href="https://www.dicebear.com/" target="_blank">Dicebear.com</a><br><br>
+            <strong>How to use:</strong>
+            <ol>
+                <li>Go to https://www.dicebear.com/</li>
+                <li>Select style "Avataaars"</li>
+                <li>Untuk laki-laki: Select gender filter "male"</li>
+                <li>Untuk perempuan: Select gender filter "female"</li>
+                <li>Download PNG</li>
+                <li>Rename: avatar_laki_laki.png atau avatar_perempuan.png</li>
+                <li>Upload ke: dist/img/</li>
+            </ol>
+        </div>
+        
+        <h2>📝 Files Modified</h2>
+        <div class="code">
+✅ inc/koneksi.php
+   - Improved getAvatarByGender() function
+   
+✅ index.php
+   - Fixed broken HTML tag (&lt;/<b>&gt;)
+   - Added query untuk ambil jekel dari database
+   - Avatar di sidebar sekarang dinamis
+   
+✅ admin/siswa/profile_siswa.php
+   - Avatar di profile sekarang dinamis
+   
+NEW: debug-avatar.php
+   - Debug tool untuk check jekel data
+   
+NEW: check-avatars.php
+   - Tool untuk compare avatar files
+        </div>
+        
+        <h2>📞 Still Having Issues?</h2>
+        
+        <div class="step warning">
+            <strong>Collect Debug Info:</strong><br><br>
+            1. Buka <a href="debug-avatar.php" target="_blank">debug-avatar.php</a><br>
+            2. Screenshot & catat:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- Jekel value<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- Selected Avatar<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- Any error messages<br><br>
+            3. Buka <a href="check-avatars.php" target="_blank">check-avatars.php</a><br>
+            4. Screenshot status & comparison<br><br>
+            5. Report dengan info di atas ✓
+        </div>
+        
+        <hr style="margin: 30px 0;">
+        
+        <p style="text-align: center; color: #666;">
+            <small>Last Updated: 7 Mar 2026<br>Perpustakaan Pelita System</small>
+        </p>
+    </div>
+</body>
+</html>

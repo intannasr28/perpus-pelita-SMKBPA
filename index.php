@@ -24,6 +24,14 @@ $data_level = $_SESSION["ses_level"];
 
 //KONEKSI DB
 include "inc/koneksi.php";
+
+// Ambil jenis kelamin dari database untuk avatar
+$data_jekel = '';
+$sql_jekel = $koneksi->query("SELECT jekel FROM tb_anggota WHERE id_anggota='$data_id'");
+if ($sql_jekel && $row = $sql_jekel->fetch_assoc()) {
+    $data_jekel = $row['jekel'];
+}
+
 $school_name = "Perpus Pelita"; // change to your school name
 $school_logo_path = "dist/img/logo.png";
 if (!file_exists($school_logo_path)) {
@@ -115,17 +123,14 @@ if (!file_exists($school_logo_path)) {
 			<!-- sidebar: style can be found in sidebar.less -->
 			<section class="sidebar">
 				<!-- Sidebar user panel -->
-				</<b>
 				<div class="user-panel">
-					<div class="pull-left image">
-						<img src="dist/img/avatar.png" class="img-circle" alt="User Image">
+					<div class="image">
+						<img src="<?php echo getAvatarWithFallback($data_jekel); ?>" class="img-circle" alt="User Image">
 					</div>
-					<div class="pull-left info">
-						<p>
-							<?php echo $data_nama; ?>
-						</p>
+					<div class="info">
+						<p><?php echo $data_nama; ?></p>
 						<span class="label label-warning">
-							<?php echo $data_level; ?>
+							<?php echo ucfirst($data_level); ?>
 						</span>
 					</div>
 				</div>

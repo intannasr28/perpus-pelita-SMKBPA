@@ -85,7 +85,7 @@ if (isset($_POST['btnLogin'])) {
 
 	<style>
 		body.login-page {
-			background: url('dist/img/background.jpeg') no-repeat center center fixed;
+			background: url('dist/img/background.png') no-repeat center center fixed;
 			background-size: cover;
 			background-attachment: fixed;
 			min-height: 100vh;
@@ -264,7 +264,7 @@ if (isset($_POST['btnLogin'])) {
 		<!-- /.login-logo -->
 		<div class="login-box-body">
 			<center>
-				<img src="dist/img/logo.png" width=160px />
+				<img src="dist/img/logo.jpeg" width=160px />
 			</center>
 			<br>
 			<p class="login-box-msg">Login System</p>			<?php if (isset($login_error)) { ?>
