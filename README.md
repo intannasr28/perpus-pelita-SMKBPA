@@ -33,6 +33,8 @@ Aplikasi Manajemen Perpustakaan Berbasis Website dengan fitur lengkap untuk pemi
 - Pengembalian single & bulk
 - Auto-generate SK dengan nomor unik
 - Perhitungan denda otomatis untuk keterlambatan
+- Pembatasan akun siswa otomatis untuk keterlambatan membayar denda
+- Admin/Petugas dapat menonaktifkan akun siswa dengan denda jatuh tempo
 
 ### 4. **Activity Tracking & Logging**
 - Log login semua user
@@ -175,18 +177,24 @@ perpuspelita/
 - Input peminjaman
 - Lihat laporan & statistik
 - Manajemen pengguna & agen
+- Menonaktifkan akun siswa yang memiliki denda jatuh tempo
+- Mengaktifkan kembali akun siswa setelah denda lunas
 
 ### 2. **Petugas**
 - Input pengembalian buku
 - Lihat data peminjaman
 - Lihat statistik dasar
 - Tidak bisa delete/edit
+- Menonaktifkan akun siswa yang memiliki denda jatuh tempo
+- Mengaktifkan kembali akun siswa setelah denda lunas
 
 ### 3. **Siswa**
-- Self-service peminjaman
+- Self-service peminjaman (jika akun aktif dan tidak ada denda jatuh tempo)
 - Lihat riwayat peminjaman
 - Lihat data buku
 - Daftar akun sendiri via register.php
+- Akun dapat dinonaktifkan jika memiliki denda yang jatuh tempo
+- Akun diaktifkan kembali setelah membayar denda
 
 ---
 
@@ -227,7 +235,13 @@ id_pengguna (PK) | nama_pengguna | username | password (md5) | level
 
 ## 🎯 Changelog
 
-### Latest Updates (v2.0)
+### Latest Updates (v2.1)
+- ✅ Fitur Pembatasan Akun Siswa: Admin/Petugas dapat menonaktifkan akun siswa dengan denda jatuh tempo
+- ✅ Verifikasi Status Akun: Siswa tidak bisa meminjam jika akun dinonaktifkan karena denda
+- ✅ Pembayaran Denda: Akun siswa diaktifkan kembali setelah denda lunas
+- ✅ Monitoring Denda: Laporan lengkap siswa dengan denda jatuh tempo
+
+### v2.0
 - ✅ UI/UX Improvement: Login & Register pages dengan background image, animations
 - ✅ Implemented Activity Tracking: Login, Peminjaman, Pengembalian logging
 - ✅ Schema Migration ke Opsi 2: 1 SK = 1 transaksi dengan jumlah variable
@@ -302,8 +316,8 @@ Untuk pertanyaan atau bug report, hubungi admin perpustakaan atau developer.
 
 ---
 
-**Last Updated:** March 2, 2026  
-**Version:** 2.0  
+**Last Updated:** March 14, 2026  
+**Version:** 2.1  
 **Status:** Production Ready ✅
 
 
