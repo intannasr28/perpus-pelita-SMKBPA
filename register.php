@@ -1,6 +1,6 @@
 <?php
 include "inc/koneksi.php";
-
+include "inc/helper_id_siswa.php";
 // Auto-generate ID Anggota
 $carikode = mysqli_query($koneksi, "SELECT id_anggota FROM tb_anggota ORDER BY id_anggota DESC LIMIT 1");
 $datakode = mysqli_fetch_array($carikode);
@@ -20,6 +20,9 @@ if (strlen($tambah) == 1) {
 } else if (strlen($tambah) == 3) {
     $format_id = "A" . $tambah;
 }
+$id_result = generateID($koneksi, 'FORMAT_4DIGIT');
+$format_id = $id_result['success'] ? $id_result['id'] : 'ERROR';
+?>
 ?>
 <!DOCTYPE html>
 <html>
