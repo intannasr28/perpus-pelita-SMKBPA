@@ -1,4 +1,10 @@
 <?php
+// Prevent multiple inclusions
+if (defined('DATABASE_CONFIG_LOADED')) {
+    return;
+}
+define('DATABASE_CONFIG_LOADED', true);
+
 // =====================================================
 // Database Connection Config
 // Support: Local Development & Railway Production
